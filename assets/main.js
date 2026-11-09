@@ -63,7 +63,7 @@
       ${p.caseUrl ? '<span class="card__case">Behind the work</span>' : ""}
       <div class="card__info">
         <h3 class="card__title">${p.title}</h3>
-        <p class="card__client">${p.client.split(" — ")[0].split(" · ")[0]}</p>
+        <p class="card__client">${p.client.split(", ")[0]}</p>
       </div>`;
     grid.appendChild(card);
   });
@@ -173,7 +173,7 @@
       lbMedia.appendChild(v);
     }
     $(".lb__title").textContent = p.title;
-    $(".lb__meta").textContent = [p.client, p.role].filter(Boolean).join(" — ");
+    $(".lb__meta").textContent = [p.client, p.role].filter(Boolean).join("  ·  ");
     $(".lb__desc").textContent = p.desc + (p.id === "celibacy" && !p.vimeo ? " Full film coming soon." : "");
     // big "Behind the work" call to action, only for projects with a case study
     const oldCta = $(".lb__cta"); if (oldCta) oldCta.remove();
@@ -182,7 +182,7 @@
       a.className = "lb__cta"; a.href = p.caseUrl;
       a.innerHTML = `
         <span class="lb__cta-thumbs">${(p.caseThumbs || []).map(t => `<img src="${t}" alt="">`).join("")}</span>
-        <span class="lb__cta-text"><small>Behind the work</small><b>See the idea behind it</b><em>Concept · Script · Storyboard · Shot list</em></span>
+        <span class="lb__cta-text"><small>Behind the work</small><b>See how I made it</b><em>The idea, script, storyboard and shot list</em></span>
         <span class="lb__cta-arrow" aria-hidden="true">→</span>`;
       $(".lb__info").insertBefore(a, $(".lb__desc"));
     }
