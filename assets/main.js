@@ -22,15 +22,28 @@
 
   /* ---------- rotator ---------- */
   const rot = $$(".rotator b");
+  const rotBox = $(".rotator");
+  const phone = matchMedia("(max-width: 600px)");
+  // on phones the box follows the current word, so there is no gap before "— Brussels"
+  const fitRot = () => {
+    if (!rotBox) return;
+    if (phone.matches) rotBox.style.width = rot[r].scrollWidth + "px";
+    else rotBox.style.width = "";
+  };
+  let r = 0;
   if (rot.length) {
-    let r = 0;
     rot[0].classList.add("is-on");
+    rotBox.style.transition = "width .8s cubic-bezier(.16,1,.3,1)";
+    fitRot();
+    phone.addEventListener ? phone.addEventListener("change", fitRot) : phone.addListener(fitRot);
+    document.fonts && document.fonts.ready.then(fitRot);
     setInterval(() => {
       const cur = rot[r];
       cur.classList.remove("is-on"); cur.classList.add("is-out");
       setTimeout(() => cur.classList.remove("is-out"), 800);
       r = (r + 1) % rot.length;
       rot[r].classList.add("is-on");
+      fitRot();
     }, 2000);
   }
 
@@ -97,7 +110,9 @@
   const brandTrack = $("#brands");
   const chip = $(".brand-chip");
   const brandHTML = BRANDS.map((b, i) => `<button class="brand" data-brand="${i}">${b.name}</button>`).join("");
-  brandTrack.innerHTML = brandHTML + brandHTML + brandHTML;
+  // with "reduce motion" on (common on iPhones) show all brands as a static wrapped list instead of a frozen, cut-off strip
+  if (reduce) { brandTrack.innerHTML = brandHTML; brandTrack.parentElement.classList.add("is-static"); }
+  else brandTrack.innerHTML = brandHTML + brandHTML + brandHTML;
   function showBrand(i) {
     const b = BRANDS[i];
     const ids = new Set(b.ids);
@@ -119,9 +134,10 @@
 
   // marquee motion, speeds up with scroll
   let mx = 0, lastY = scrollY, vel = 0, dir = 1, hover = false, groupW = 0;
-  brandTrack.addEventListener("mouseenter", () => (hover = true));
-  brandTrack.addEventListener("mouseleave", () => (hover = false));
-  const measureBrands = () => { const kids = brandTrack.children; groupW = kids[BRANDS.length].offsetLeft - kids[0].offsetLeft; };
+  // pause on hover only with a real mouse (on phones a tap would freeze it forever)
+  brandTrack.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") hover = true; });
+  brandTrack.addEventListener("pointerleave", () => (hover = false));
+  const measureBrands = () => { const kids = brandTrack.children; if (kids.length > BRANDS.length) groupW = kids[BRANDS.length].offsetLeft - kids[0].offsetLeft; };
   addEventListener("resize", measureBrands);
   document.fonts && document.fonts.ready.then(measureBrands);
   measureBrands();
@@ -213,6 +229,8 @@
   }
 
   gsap.registerPlugin(ScrollTrigger);
+  // phones: the address bar showing/hiding must not re-trigger animations
+  ScrollTrigger.config({ ignoreMobileResize: true });
   if (typeof window.Lenis !== "undefined") {
     const lenis = new Lenis({ duration: 1.1 });
     window.__lenis = lenis;

@@ -137,7 +137,7 @@ em { font-style: italic; }
 .lb__meta { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 .lb__desc { margin: 0; font-size: 13px; color: rgba(238,234,226,.8); max-width: 60ch; }
 .lb__nav { display: flex; gap: 22px; font-size: 13px; }
-.lb__close { position: absolute; top: 22px; right: var(--pad); font-size: 13px; }
+.lb .lb__close { position: absolute; top: 22px; right: var(--pad); font-size: 13px; z-index: 2; }
 @media (max-width: 800px) {
   .lb { grid-template-rows: auto auto; overflow-y: auto; align-content: start; }
   .lb__media video { height: auto; max-height: 68svh; }
@@ -185,9 +185,49 @@ em { font-style: italic; }
 .brand::after { content: "✺"; font-size: .28em; color: var(--red); position: absolute; right: -.2em; top: 50%; transform: translateY(-50%); }
 .brand:hover { color: var(--paper); }
 .marquee:hover .marquee__track { animation-play-state: paused; }
+/* reduce-motion: static wrapped list */
+.marquee.is-static { white-space: normal; }
+.marquee.is-static .marquee__track { display: flex; flex-wrap: wrap; gap: 4px 0; padding: 0 var(--pad); transform: none !important; }
+.marquee.is-static .brand { font-size: clamp(30px, 4.6vw, 72px); padding: 0 .9em 0 0; }
+.marquee.is-static .brand::after { right: .3em; }
 
 /* card reveal */
 .card { clip-path: inset(0 0 0 0); }
+
+/* ---------- phone fixes (desktop untouched) ---------- */
+@media (max-width: 600px) {
+  /* nav fits on 360px screens */
+  .nav { padding: 18px var(--pad); }
+  .nav__name { font-size: 14px; }
+  .nav__links { gap: 16px; font-size: 13px; }
+
+  /* name: big, two lines */
+  .hero__title { font-size: 21vw; line-height: .86; }
+  .hero__title .split { display: block; }
+  .hero__text { bottom: calc(var(--pad) + 10px); gap: 18px; }
+  .hero__sub { font-size: 14px; }
+  .rotator b { text-align: left; }
+
+  /* cards: client under the title, never overlapping */
+  .card__info { flex-direction: column; align-items: flex-start; gap: 2px; left: 14px; right: 14px; bottom: 12px; }
+  .card__client { white-space: normal; }
+
+  /* spacing */
+  .work { padding: 90px var(--pad) 90px; }
+  .about { padding: 40px var(--pad) 80px; }
+  .brands { padding: 50px 0 60px; }
+  .contact { padding: 80px var(--pad) 90px; }
+  .socials { gap: 22px; }
+
+  /* lightbox: close button pinned top-right, video under it */
+  .lb { padding: 60px 14px 28px; }
+  .lb .lb__close { position: fixed; top: 18px; right: 16px; padding: 6px 0; }
+  .lb__title { font-size: 22px; }
+  .lb__nav { gap: 28px; font-size: 14px; }
+
+  /* lighter on phones */
+  .grain { display: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
