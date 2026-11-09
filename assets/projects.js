@@ -10,7 +10,7 @@ window.PROJECTS = [
   },
   {
     id: "vtv-padre", title: "Father's Day — Cinematic Short", client: "VTV Honduras · Albavisión", year: "2026",
-    cat: "tv", orient: "h", role: "Creative direction · Script · Production · Edit",
+    cat: "tv", orient: "h", role: "Creative direction · Script · Production · Edit", caseUrl: "work/fathers-day.html",
     desc: "A cinematic Father's Day campaign for national television: a dad, his son and an origami parrot. I wrote it, planned it, directed the shoot and led the edit."
   },
   {

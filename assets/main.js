@@ -60,6 +60,7 @@
     card.innerHTML = `
       <img src="media/${p.id}${p.orient === "v" ? "-thumb" : ""}.jpg" alt="" loading="lazy" decoding="async">
       <video muted loop playsinline preload="none" data-src="media/${p.id}-preview.mp4"></video>
+      ${p.caseUrl ? '<span class="card__case">Behind the work</span>' : ""}
       <div class="card__info">
         <h3 class="card__title">${p.title}</h3>
         <p class="card__client">${p.client.split(" — ")[0].split(" · ")[0]}</p>
@@ -174,6 +175,12 @@
     $(".lb__title").textContent = p.title;
     $(".lb__meta").textContent = [p.client, p.role].filter(Boolean).join(" — ");
     $(".lb__desc").textContent = p.desc + (p.id === "celibacy" && !p.vimeo ? " Full film coming soon." : "");
+    if (p.caseUrl) {
+      const a = document.createElement("a");
+      a.className = "lb__case"; a.href = p.caseUrl; a.textContent = "Behind the work — script, storyboard, shot list →";
+      $(".lb__desc").appendChild(document.createElement("br"));
+      $(".lb__desc").appendChild(a);
+    }
     if (hasGsap && !reduce) gsap.fromTo([lbMedia, ".lb__info"], { opacity: 0 }, { opacity: 1, duration: .6, stagger: .08, ease: "power2.out" });
   }
   function show() { render(PROJECTS[list[pos]]); }

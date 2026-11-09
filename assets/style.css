@@ -194,6 +194,12 @@ em { font-style: italic; }
 /* card reveal */
 .card { clip-path: inset(0 0 0 0); }
 
+/* link from the player to a case study */
+.lb__case { display: inline-block; margin-top: 10px; color: var(--red); }
+.lb__case:hover { text-decoration: underline; }
+/* small "case study" badge on cards that have one */
+.card__case { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 11px; padding: 4px 9px; border-radius: 999px; background: var(--red); color: var(--ink); font-weight: 500; }
+
 /* ---------- phone fixes (desktop untouched) ---------- */
 @media (max-width: 600px) {
   /* nav fits on 360px screens */
