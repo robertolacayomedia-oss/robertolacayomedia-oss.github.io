@@ -8,6 +8,37 @@
   const hasGsap = typeof window.gsap !== "undefined";
   const PROJECTS = window.PROJECTS || [];
 
+  /* ---------- split text into chars (chrome moves to each char) ---------- */
+  $$(".split").forEach(el => {
+    const chrome = el.classList.contains("chrome") || !!el.closest(".chrome");
+    const text = el.textContent;
+    el.textContent = "";
+    [...text].forEach((c, i) => {
+      const s = document.createElement("span");
+      s.className = "ch" + (chrome ? " chrome" : "");
+      s.textContent = c;
+      if (chrome) s.style.animationDelay = (i * 0.06) + "s";
+      el.appendChild(s);
+    });
+    if (chrome) el.classList.remove("chrome");
+  });
+  $$(".hero__title.chrome").forEach(h => { h.classList.remove("chrome"); h.classList.add("chrome-wrap"); });
+  $$(".h2 .split").forEach(s => s.parentElement.classList.add("chrome-wrap"));
+
+  /* ---------- rotator ---------- */
+  const rot = $$(".rotator b");
+  if (rot.length) {
+    let r = 0;
+    rot[0].classList.add("is-on");
+    setInterval(() => {
+      const cur = rot[r];
+      cur.classList.remove("is-on"); cur.classList.add("is-out");
+      setTimeout(() => cur.classList.remove("is-out"), 800);
+      r = (r + 1) % rot.length;
+      rot[r].classList.add("is-on");
+    }, 2000);
+  }
+
   /* ---------- grid ---------- */
   const grid = $("#grid");
   PROJECTS.forEach((p, i) => {
@@ -58,11 +89,56 @@
     $$(".filter").forEach(b => b.classList.toggle("is-active", b === btn));
     const f = btn.dataset.filter;
     $$(".card").forEach(c => c.classList.toggle("is-hidden", !(f === "all" || c.dataset.cat === f)));
+    chip.hidden = true;
+    updateCount();
     if (hasGsap && !reduce) {
-      gsap.fromTo(".card:not(.is-hidden)", { opacity: 0 }, { opacity: 1, duration: .6, stagger: .03, ease: "power2.out" });
+      gsap.fromTo(".card:not(.is-hidden)", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1, stagger: .05, ease: "expo.inOut" });
       ScrollTrigger.refresh();
     }
   }));
+
+  /* ---------- brands: marquee + click to filter ---------- */
+  const BRANDS = window.BRANDS || [];
+  const brandTrack = $("#brands");
+  const chip = $(".brand-chip");
+  const brandHTML = BRANDS.map((b, i) => `<button class="brand" data-brand="${i}">${b.name}</button>`).join("");
+  brandTrack.innerHTML = brandHTML + brandHTML + brandHTML;
+  function showBrand(i) {
+    const b = BRANDS[i];
+    const ids = new Set(b.ids);
+    $$(".filter").forEach(f => f.classList.remove("is-active"));
+    $$(".card").forEach(c => c.classList.toggle("is-hidden", !ids.has(PROJECTS[+c.dataset.index].id)));
+    $(".brand-chip__name").textContent = b.name;
+    chip.hidden = false;
+    updateCount();
+    const work = $("#work");
+    if (window.__lenis) window.__lenis.scrollTo(work, { duration: 1.6 }); else work.scrollIntoView({ behavior: "smooth" });
+    if (hasGsap && !reduce) {
+      gsap.fromTo(".card:not(.is-hidden)", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 1.1, stagger: .08, delay: .6, ease: "expo.inOut" });
+      ScrollTrigger.refresh();
+    }
+  }
+  brandTrack.addEventListener("click", e => { const b = e.target.closest(".brand"); if (b) showBrand(+b.dataset.brand); });
+  chip.addEventListener("click", () => $(".filter[data-filter='all']").click());
+  function updateCount() { $(".h2 .count").textContent = $$(".card:not(.is-hidden)").length; }
+
+  // marquee motion, speeds up with scroll
+  let mx = 0, lastY = scrollY, vel = 0, dir = 1, hover = false, groupW = 0;
+  brandTrack.addEventListener("mouseenter", () => (hover = true));
+  brandTrack.addEventListener("mouseleave", () => (hover = false));
+  const measureBrands = () => { const kids = brandTrack.children; groupW = kids[BRANDS.length].offsetLeft - kids[0].offsetLeft; };
+  addEventListener("resize", measureBrands);
+  document.fonts && document.fonts.ready.then(measureBrands);
+  measureBrands();
+  if (!reduce) (function loop() {
+    const y = scrollY, dy = y - lastY; lastY = y;
+    if (dy) dir = dy > 0 ? 1 : -1;
+    vel += (Math.min(Math.abs(dy), 80) - vel) * .08;
+    if (!hover) mx -= (0.6 + vel * .25) * dir;
+    if (groupW) { if (mx <= -groupW) mx += groupW; if (mx > 0) mx -= groupW; }
+    brandTrack.style.transform = `translate3d(${mx}px,0,0)`;
+    requestAnimationFrame(loop);
+  })();
 
   /* ---------- lightbox ---------- */
   const lb = $(".lb"), lbMedia = $(".lb__media");
@@ -166,6 +242,7 @@
   setTimeout(go, 2500);
 
   gsap.set(".hero .line > span, .hero__reel > span", { yPercent: 105 });
+  gsap.set(".hero__title .ch", { yPercent: 115 });
   gsap.set(".nav", { opacity: 0 });
   const lineTl = gsap.to(".loader__line", { scaleX: .85, duration: 1.1, ease: "power2.inOut" });
   (function wait() {
@@ -174,7 +251,8 @@
       .to(".loader__line", { scaleX: 1, duration: .35, ease: "power2.out" })
       .to(".loader", { opacity: 0, duration: .8, ease: "power2.inOut" })
       .from(".hero__video", { scale: 1.08, duration: 2.2, ease: "expo.out" }, "<")
-      .to(".hero .line > span, .hero__reel > span", { yPercent: 0, duration: 1.2, stagger: .1, ease: "expo.out" }, "-=1.6")
+      .to(".hero__title .ch", { yPercent: 0, duration: 1.3, stagger: .045, ease: "expo.out" }, "-=1.7")
+      .to(".hero .line > span, .hero__reel > span", { yPercent: 0, duration: 1.2, stagger: .1, ease: "expo.out" }, "-=1.1")
       .to(".nav", { opacity: 1, duration: 1 }, "-=1");
   })();
 
@@ -182,13 +260,22 @@
   gsap.to(".hero__video", { yPercent: 12, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
   gsap.to(".hero__text", { opacity: 0, y: -40, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "60% top", scrub: true } });
 
+  gsap.set(".card", { clipPath: "inset(100% 0 0 0)" });
   ScrollTrigger.batch(".card", {
     start: "top 92%", once: true,
-    onEnter: b => gsap.fromTo(b, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.1, stagger: .08, ease: "expo.out" })
+    onEnter: b => {
+      gsap.to(b, { clipPath: "inset(0% 0 0 0)", duration: 1.2, stagger: .09, ease: "expo.inOut" });
+      gsap.fromTo(b.map(c => $("img", c)), { scale: 1.25 }, { scale: 1, duration: 1.8, stagger: .09, ease: "expo.out", clearProps: "transform" });
+    }
   });
-  gsap.set(".card", { opacity: 0 });
 
-  $$(".h2, .about__lede, .xp li, .about__small, .contact__title, .mail, .socials").forEach(el => {
+  // section titles: chars slide up
+  $$(".h2, .contact__title").forEach(t => {
+    gsap.from($$(".ch", t), { yPercent: 110, opacity: 0, duration: 1.1, stagger: .03, ease: "expo.out", scrollTrigger: { trigger: t, start: "top 88%", once: true } });
+  });
+  gsap.from(".brands", { opacity: 0, duration: 1.2, scrollTrigger: { trigger: ".brands", start: "top 90%", once: true } });
+
+  $$(".about__lede, .xp li, .about__small, .mail, .socials").forEach(el => {
     gsap.from(el, { opacity: 0, y: 24, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: el, start: "top 90%", once: true } });
   });
   gsap.fromTo(".about__img img", { yPercent: -8 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: true } });

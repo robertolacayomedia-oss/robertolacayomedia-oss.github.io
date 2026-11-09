@@ -105,6 +105,21 @@ window.PROJECTS = [
   }
 ];
 
+// Brands in the bottom marquee → the projects they open
+window.BRANDS = [
+  { name: "VTV Honduras", ids: ["vtv-padre", "vtv-verano", "vtv-trabajador", "vtv-meridiano", "vtv-periodista", "vtv-picosas", "vtv-41"] },
+  { name: "Midnight Voodoo", ids: ["mv-boogieville", "mv-retro", "mv-club", "elnicoya-live"] },
+  { name: "Couleur Café", ids: ["gelatina"] },
+  { name: "El Nicoya", ids: ["elnicoya-live", "elnicoya-tope", "mv-retro"] },
+  { name: "GOZA", ids: ["goza-paramour", "goza-requin", "goza-grandplace"] },
+  { name: "Club Gelatina", ids: ["gelatina"] },
+  { name: "Albavisión", ids: ["vtv-padre", "vtv-verano", "vtv-trabajador", "vtv-meridiano", "vtv-periodista", "vtv-picosas", "vtv-41"] },
+  { name: "BoogieVille", ids: ["mv-boogieville"] },
+  { name: "Le Requin d'Or", ids: ["goza-requin"] },
+  { name: "Thomas More", ids: ["imeb-takeover"] },
+  { name: "Dé Classic", ids: ["declassic"] }
+];
+
 // Hero showreel (not in the grid)
 window.SHOWREEL = {
   id: "showreel-2026", title: "Showreel 2026", client: "Roberto Lacayo", year: "2026",
