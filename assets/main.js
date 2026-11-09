@@ -175,11 +175,16 @@
     $(".lb__title").textContent = p.title;
     $(".lb__meta").textContent = [p.client, p.role].filter(Boolean).join(" — ");
     $(".lb__desc").textContent = p.desc + (p.id === "celibacy" && !p.vimeo ? " Full film coming soon." : "");
+    // big "Behind the work" call to action, only for projects with a case study
+    const oldCta = $(".lb__cta"); if (oldCta) oldCta.remove();
     if (p.caseUrl) {
       const a = document.createElement("a");
-      a.className = "lb__case"; a.href = p.caseUrl; a.textContent = "Behind the work — script, storyboard, shot list →";
-      $(".lb__desc").appendChild(document.createElement("br"));
-      $(".lb__desc").appendChild(a);
+      a.className = "lb__cta"; a.href = p.caseUrl;
+      a.innerHTML = `
+        <span class="lb__cta-thumbs">${(p.caseThumbs || []).map(t => `<img src="${t}" alt="">`).join("")}</span>
+        <span class="lb__cta-text"><small>Behind the work</small><b>See the idea behind it</b><em>Concept · Script · Storyboard · Shot list</em></span>
+        <span class="lb__cta-arrow" aria-hidden="true">→</span>`;
+      $(".lb__info").insertBefore(a, $(".lb__desc"));
     }
     if (hasGsap && !reduce) gsap.fromTo([lbMedia, ".lb__info"], { opacity: 0 }, { opacity: 1, duration: .6, stagger: .08, ease: "power2.out" });
   }

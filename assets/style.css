@@ -194,11 +194,40 @@ em { font-style: italic; }
 /* card reveal */
 .card { clip-path: inset(0 0 0 0); }
 
-/* link from the player to a case study */
-.lb__case { display: inline-block; margin-top: 10px; color: var(--red); }
-.lb__case:hover { text-decoration: underline; }
-/* small "case study" badge on cards that have one */
-.card__case { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 11px; padding: 4px 9px; border-radius: 999px; background: var(--red); color: var(--ink); font-weight: 500; }
+/* big call to action from the player to a case study */
+.lb__info { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto; align-items: center; }
+.lb__cta {
+  display: flex; align-items: center; gap: 20px; padding: 14px 16px 14px 14px;
+  background: var(--red); color: var(--ink); border-radius: 999px; text-decoration: none;
+  box-shadow: 0 0 0 0 rgba(255,59,31,.55); animation: ctaPulse 2.4s ease-out 1s 3;
+  transition: transform .5s var(--ease), background .3s;
+}
+.lb__cta:hover { transform: translateY(-3px); background: #ff5236; }
+@keyframes ctaPulse { 0% { box-shadow: 0 0 0 0 rgba(255,59,31,.55); } 100% { box-shadow: 0 0 0 18px rgba(255,59,31,0); } }
+.lb__cta-thumbs { display: flex; flex: none; padding-left: 10px; }
+.lb__cta-thumbs img { width: 62px; height: 62px; object-fit: cover; border-radius: 50%; border: 2px solid var(--red); margin-left: -12px; transition: margin .5s var(--ease), transform .5s var(--ease); }
+.lb__cta-thumbs img:nth-child(1) { transform: rotate(-6deg); }
+.lb__cta-thumbs img:nth-child(3) { transform: rotate(6deg); }
+.lb__cta:hover .lb__cta-thumbs img { margin-left: -4px; transform: none; }
+.lb__cta-text { display: flex; flex-direction: column; line-height: 1.15; white-space: nowrap; }
+.lb__cta-text small { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .75; }
+.lb__cta-text b { font-size: 24px; font-weight: 600; letter-spacing: -.03em; margin: 2px 0; }
+.lb__cta-text em { font-style: normal; font-size: 13px; opacity: .8; }
+.lb__cta-arrow { flex: none; width: 54px; height: 54px; font-size: 22px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-size: 18px; transition: transform .5s var(--ease); }
+.lb__cta:hover .lb__cta-arrow { transform: translateX(5px); }
+
+/* "Behind the work" badge on cards that have a case study */
+.card__case { position: absolute; top: 12px; left: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; padding: 6px 12px; border-radius: 999px; background: var(--red); color: var(--ink); font-weight: 600; letter-spacing: -.005em; box-shadow: 0 4px 18px rgba(0,0,0,.35); }
+.card__case::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
+@media (max-width: 1300px) { .lb__info { grid-template-columns: minmax(0, 1fr) auto; } .lb__desc { grid-column: 1 / -1; order: 3; } .lb__nav { order: 4; } }
+@media (max-width: 800px) {
+  .lb__info { grid-template-columns: 1fr; }
+  .lb__cta { order: 2; width: 100%; gap: 14px; }
+  .lb__cta-thumbs img { width: 44px; height: 44px; }
+  .lb__cta-text b { font-size: 18px; }
+  .lb__cta-text em { white-space: normal; }
+  .lb__cta-arrow { width: 42px; height: 42px; margin-left: auto; }
+}
 
 /* ---------- phone fixes (desktop untouched) ---------- */
 @media (max-width: 600px) {
