@@ -8,22 +8,17 @@
   const hasGsap = typeof window.gsap !== "undefined";
   const PROJECTS = window.PROJECTS || [];
 
-  /* ---------- split text into chars (chrome moves to each char) ---------- */
+  /* ---------- split text into chars (slide-up animation) ---------- */
   $$(".split").forEach(el => {
-    const chrome = el.classList.contains("chrome") || !!el.closest(".chrome");
     const text = el.textContent;
     el.textContent = "";
-    [...text].forEach((c, i) => {
+    [...text].forEach(c => {
       const s = document.createElement("span");
-      s.className = "ch" + (chrome ? " chrome" : "");
+      s.className = "ch";
       s.textContent = c;
-      if (chrome) s.style.animationDelay = (i * 0.06) + "s";
       el.appendChild(s);
     });
-    if (chrome) el.classList.remove("chrome");
   });
-  $$(".hero__title.chrome").forEach(h => { h.classList.remove("chrome"); h.classList.add("chrome-wrap"); });
-  $$(".h2 .split").forEach(s => s.parentElement.classList.add("chrome-wrap"));
 
   /* ---------- rotator ---------- */
   const rot = $$(".rotator b");
