@@ -200,8 +200,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 @media (max-width: 520px) { .console { padding: 40px 14px 0; } .console__chin { padding: 22px 0 26px; } .console__chin .grille { display: none; } }
 
 /* 3D: the console is a box you can turn around */
-.lib__left { perspective: 1900px; }
-.rig { transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2, .9, .25, 1); }
+
+.rig { transform: perspective(1900px); transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2, .9, .25, 1); }
 .rig.is-drag { transition: none; }
 .console.can-turn { cursor: grab; }
 .rig.is-drag .console { cursor: grabbing; }
@@ -226,6 +226,23 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .viewbar { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; margin: 18px 0 0; position: relative; z-index: 6; font-family: var(--pixel); font-size: 9.5px; letter-spacing: .08em; color: var(--muted); }
 .viewbar button { padding: 5px 9px; border-radius: 6px; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); transition: background .2s; }
 .viewbar button:hover { background: rgba(255,255,255,.08); }
+/* phones: the console first, the cartridges in a swipe strip right under it, details below */
+.swipehint { display: none; }
+@media (max-width: 900px) {
+  .lib .lib__main { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+  .lib .lib__left { display: contents; }
+  .rig { order: 1; }
+  .lib .lib__right { order: 2; padding-top: 0; min-width: 0; }
+  .viewbar { order: 3; margin-top: 4px; }
+  .now { order: 4; margin-top: 8px; }
+  .lib .tabs, .lib .legend { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar, .legend::-webkit-scrollbar, .shelf::-webkit-scrollbar { display: none; }
+  .tab, .legend button { flex-shrink: 0; }
+  .lib .legend { margin: 10px 0 8px; gap: 4px 12px; }
+  .swipehint { display: block; font-family: var(--pixel); font-size: 9.5px; letter-spacing: .1em; color: var(--muted); margin: 0 0 6px; }
+  .lib .shelf, .lib .tabs + .shelf { display: flex; grid-template-columns: none; overflow-x: auto; overflow-y: hidden; gap: 12px; padding: 14px; margin-top: 0; scroll-snap-type: x mandatory; scroll-padding: 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .lib .shelf .cell { flex: 0 0 31%; max-width: 150px; min-width: 104px; scroll-snap-align: start; }
+}
 /* d-pad and face buttons */
 .dpad { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
 .dpad button, .dpad i { position: absolute; width: 26px; height: 26px; background: #34343a; }
@@ -562,6 +579,7 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
         <button class="tab" data-tab="s" role="tab" aria-selected="false" id="tabs"></button>
       </div>
       <div class="legend" id="legend"></div>
+      <p class="swipehint">◀ Swipe the cartridges · tap one to play ▶</p>
       <div class="shelf" id="shelf"></div>
     </div>
   </div>
@@ -1233,6 +1251,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
     if (inserted) await eject(false, true);
     if (rx || ry) { setView(0, 0, true); await sleep(reduce ? 0 : 750); }
     const { kind, x } = findK(k); if (!x) return;
+    { const cr = consoleEl.getBoundingClientRect(); if (!opts.instant && (cr.top < -40 || cr.bottom > innerHeight + 40)) { consoleEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); await sleep(reduce ? 0 : 520); } }
     const srcCell = cellOf(k), src = srcCell && srcCell.querySelector(".cart");
     const a = opts.fromRect || (src && src.getBoundingClientRect());
     if (src) src.classList.remove("is-hover");
@@ -1568,7 +1587,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   let rx = 0, ry = 0, turn = null, spinT = 0;
   const backface = $("#backface"); let bfT = 0;
   const showBack = () => { const a = ((ry % 360) + 360) % 360; backface.classList.toggle("is-off", !(a > 90 && a < 270)); };
-  const applyRot = () => { rig.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; clearTimeout(bfT); if (rig.classList.contains("is-drag")) showBack(); else bfT = setTimeout(showBack, 380); };
+  const applyRot = () => { rig.style.transform = `perspective(1900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; clearTimeout(bfT); if (rig.classList.contains("is-drag")) showBack(); else bfT = setTimeout(showBack, 380); };
   function setView(x, y, quiet) { cancelAnimationFrame(spinT); spinT = 0; rig.classList.remove("is-drag"); ry = ((ry % 360) + 540) % 360 - 180; applyRot(); void rig.offsetWidth; rx = x; ry = y; applyRot(); if (!quiet) sfx.tick(); }
   document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
     const v = b.dataset.view;
