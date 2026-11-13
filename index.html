@@ -49,13 +49,13 @@ body { margin: 0; color: var(--fg); font-family: var(--sans); font-size: 14px; l
   background: radial-gradient(var(--dot) 1px, transparent 1.3px) 0 0 / 18px 18px, linear-gradient(180deg, var(--bg-top), var(--bg-mid) 55%, var(--bg-bot)) fixed; background-color: var(--bg-mid); }
 /* textures, all procedural: a flesh wall, brushed metal plates, scratches */
 :root { --tex-flesh: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.019' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23ff8a6a' surfaceScale='7' result='l'%3E%3CfeDistantLight azimuth='235' elevation='34'/%3E%3C/feDiffuseLighting%3E%3CfeTurbulence type='turbulence' baseFrequency='0.02' numOctaves='2' seed='3' stitchTiles='stitch' result='v'/%3E%3CfeColorMatrix in='v' type='matrix' values='0 0 0 0 .25  0 0 0 0 0  0 0 0 0 0  -2.2 0 0 0 1.25' result='veins'/%3E%3CfeComposite in='l' in2='SourceGraphic' operator='arithmetic' k1='1' k2='0' k3='0' k4='0' result='flesh'/%3E%3CfeMerge%3E%3CfeMergeNode in='flesh'/%3E%3CfeMergeNode in='veins'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='520' height='520' fill='%236e1610' filter='url(%23f)'/%3E%3C/svg%3E"); --tex-metal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.02' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55  0 0 0 0 .56  0 0 0 0 .6  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23m)'/%3E%3C/svg%3E"); --tex-scratch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.004 0.6' numOctaves='1' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 -9 0 3.6'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23s)'/%3E%3C/svg%3E"); --flesh-op: .78; --flesh-filter: none; }
-:root[data-bg="toxic"] { --flesh-filter: hue-rotate(95deg) saturate(1.4); --flesh-op: .42; }
-:root[data-bg="tech"] { --flesh-filter: grayscale(1) brightness(.75); --flesh-op: .35; }
-:root[data-bg="void"] { --flesh-op: .12; }
-.world__flesh { position: absolute; inset: 0; background: var(--tex-flesh) 0 0 / 520px 520px; opacity: var(--flesh-op); filter: var(--flesh-filter);
+:root[data-bg="toxic"] { --flesh-op: .6; }
+:root[data-bg="tech"] { --flesh-op: .55; }
+:root[data-bg="void"] { --flesh-op: .4; }
+.world__flesh { position: absolute; inset: 0; background: var(--tx-wall, var(--tex-flesh)) 0 0 / 256px 256px; image-rendering: pixelated; opacity: var(--flesh-op); filter: var(--flesh-filter);
   -webkit-mask-image: radial-gradient(110% 75% at 50% 20%, rgba(0,0,0,.35) 10%, #000 70%); mask-image: radial-gradient(110% 75% at 50% 20%, rgba(0,0,0,.35) 10%, #000 70%); }
 .world__vignette { position: absolute; inset: 0; background: radial-gradient(100% 70% at 50% 40%, transparent 40%, rgba(0,0,0,.75)); }
-.plate { position: relative; background: linear-gradient(180deg, rgba(10,10,12,.5), rgba(10,10,12,.62)), var(--tex-metal), linear-gradient(180deg, #4a4e55, #24272c); background-size: auto, 300px 300px, auto; color: var(--fg);
+.plate { position: relative; background: linear-gradient(180deg, rgba(10,10,12,.42), rgba(10,10,12,.6)), var(--tx-metal, var(--tex-metal)), linear-gradient(180deg, #4a4e55, #24272c); background-size: auto, 192px 192px, auto; image-rendering: pixelated; color: var(--fg);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -2px 0 rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.7), 0 10px 30px -12px rgba(0,0,0,.8); }
 .plate::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: var(--tex-scratch) 0 0 / 260px 260px; opacity: .12; }
 .rivets::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-image: radial-gradient(circle at 10px 10px, #cfd3d8 0 2px, #4a4f56 2.5px 3.5px, transparent 4px), radial-gradient(circle at calc(100% - 10px) 10px, #cfd3d8 0 2px, #4a4f56 2.5px 3.5px, transparent 4px), radial-gradient(circle at 10px calc(100% - 10px), #cfd3d8 0 2px, #4a4f56 2.5px 3.5px, transparent 4px), radial-gradient(circle at calc(100% - 10px) calc(100% - 10px), #cfd3d8 0 2px, #4a4f56 2.5px 3.5px, transparent 4px); }
@@ -208,10 +208,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .face { position: absolute; pointer-events: none; border-radius: 8px; overflow: hidden; }
 .face .plastic { border-radius: inherit; }
 .face--back { inset: 0; border-radius: 30px; transform: translateZ(calc(var(--D) * -1)) rotateY(180deg); }
+.face--back { transition: opacity .25s; }
+.face--back.is-off { opacity: 0; }
 .face--top { left: 26px; right: 26px; top: 0; height: var(--D); transform-origin: 50% 0; transform: rotateX(-90deg); }
 .face--bottom { left: 26px; right: 26px; bottom: 0; height: var(--D); transform-origin: 50% 100%; transform: rotateX(90deg); }
 .face--left { top: 26px; bottom: 26px; left: 0; width: var(--D); transform-origin: 0 50%; transform: rotateY(90deg); }
 .face--right { top: 26px; bottom: 26px; right: 0; width: var(--D); transform-origin: 100% 50%; transform: rotateY(-90deg); }
+.face--back .backvents { background: var(--tx-grate) 0 0 / 48px 48px; image-rendering: pixelated; }
 .face--left .plastic, .face--right .plastic { background-image: repeating-linear-gradient(180deg, rgba(255,255,255,.12) 0 2px, transparent 2px 9px), linear-gradient(90deg, var(--p-hi), var(--p-mid) 50%, var(--p-lo)); }
 .topslot { position: absolute; z-index: 2; left: 34%; right: 34%; top: 38%; height: 26%; border-radius: 8px; background: linear-gradient(180deg, #000, #151519); box-shadow: inset 0 3px 6px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.3); }
 .topslot::after { content: ""; position: absolute; left: 8%; right: 8%; top: 45%; height: 18%; background: repeating-linear-gradient(90deg, #e2bd55 0 4px, transparent 4px 7px); box-shadow: 0 0 8px rgba(255, 210, 90, .6); }
@@ -223,6 +226,27 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .viewbar { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; margin: 18px 0 0; position: relative; z-index: 6; font-family: var(--pixel); font-size: 9.5px; letter-spacing: .08em; color: var(--muted); }
 .viewbar button { padding: 5px 9px; border-radius: 6px; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); transition: background .2s; }
 .viewbar button:hover { background: rgba(255,255,255,.08); }
+/* d-pad and face buttons */
+.dpad { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
+.dpad button, .dpad i { position: absolute; width: 26px; height: 26px; background: #34343a; }
+.dpad button { box-shadow: inset 0 2px 0 rgba(255,255,255,.2), inset 0 -3px 0 rgba(0,0,0,.55); }
+.dpad button::after { content: ""; position: absolute; left: 8px; top: 8px; width: 10px; height: 10px; background: #d8d4d0; }
+.dpad__u { left: 26px; top: 0; border-radius: 5px 5px 0 0; } .dpad__u::after { clip-path: polygon(50% 10%, 100% 90%, 0 90%); }
+.dpad__d { left: 26px; top: 52px; border-radius: 0 0 5px 5px; } .dpad__d::after { clip-path: polygon(0 10%, 100% 10%, 50% 90%); }
+.dpad__l { left: 0; top: 26px; border-radius: 5px 0 0 5px; } .dpad__l::after { clip-path: polygon(10% 50%, 90% 0, 90% 100%); }
+.dpad__r { left: 52px; top: 26px; border-radius: 0 5px 5px 0; } .dpad__r::after { clip-path: polygon(10% 0, 90% 50%, 10% 100%); }
+.dpad i { left: 26px; top: 26px; box-shadow: inset 0 0 0 9px #2a2a30; }
+.dpad button:active { filter: brightness(1.4); transform: translateY(1px); }
+.fbs { position: relative; width: 86px; height: 86px; flex-shrink: 0; }
+.fb { position: absolute; width: 30px; height: 30px; border-radius: 50%; font-family: var(--pixel); font-size: 13px; line-height: 30px; text-align: center; color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.5);
+  box-shadow: 0 3px 0 rgba(0,0,0,.65), inset 0 2px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.3), 0 0 12px -2px var(--fbg, transparent); transition: transform .08s, box-shadow .08s, filter .2s; }
+.fb:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0,0,0,.65), inset 0 2px 0 rgba(255,255,255,.45); }
+.fb--y { left: 28px; top: 0; background: #f2c014; color: #241a00; text-shadow: none; --fbg: rgba(242,192,20,.7); }
+.fb--x { left: 0; top: 28px; background: #2b54d8; --fbg: rgba(43,84,216,.7); }
+.fb--b { right: 0; top: 28px; background: #e0352b; --fbg: rgba(224,53,43,.7); }
+.fb--a { left: 28px; bottom: 0; background: #2fa84f; --fbg: rgba(47,168,79,.7); }
+.fb:disabled { filter: grayscale(.7) brightness(.6); cursor: default; }
+@media (max-width: 520px) { .dpad { transform: scale(.82); margin: -7px; } .fbs { transform: scale(.82); margin: -8px; } .console__chin .grille { display: none; } }
 /* joystick: a clear red ball-top stick */
 .joy { position: relative; width: 50px; height: 50px; touch-action: none; cursor: grab; flex-shrink: 0; }
 .joy__base { position: absolute; inset: 4px; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #2a2a30, #050506 70%); box-shadow: inset 0 2px 5px rgba(0,0,0,.9), 0 0 0 2px rgba(255,255,255,.12), 0 1px 0 rgba(255,255,255,.25); }
@@ -268,7 +292,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .now__yt a, .lib__links a { color: var(--flame-yellow); text-decoration: none; border-bottom: 1px solid rgba(255, 210, 58, .4); }
 .now__yt a:hover, .lib__links a:hover { border-color: var(--flame-yellow); }
 .lib__links { font-family: var(--pixel); font-size: 10px; letter-spacing: .08em; color: var(--muted); display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-.now__help { padding: 16px 18px; border-radius: 10px; background: var(--tex-metal), linear-gradient(135deg, rgba(120, 30, 14, .55), rgba(40, 14, 10, .7)); background-size: 300px 300px, auto; box-shadow: inset 0 0 0 1px rgba(255, 120, 60, .35), inset 0 1px 0 rgba(255,255,255,.15); }
+.now__help { padding: 16px 18px; border-radius: 10px; border-top: 10px solid transparent; border-image: var(--tx-hazard) 0 0 64 0 / 10px 0 0 0 repeat; background: linear-gradient(135deg, rgba(40, 10, 6, .7), rgba(20, 8, 6, .82)), var(--tx-rust, var(--tex-metal)); background-size: auto, 128px 128px; image-rendering: pixelated; box-shadow: inset 0 0 0 1px rgba(255, 120, 60, .35), inset 0 1px 0 rgba(255,255,255,.15); }
 .now__help > span { color: var(--flame-orange); }
 .hire { margin-top: 12px; font-family: var(--pixel); font-size: 11px; letter-spacing: .08em; color: #fff; background: linear-gradient(180deg, #e8241c, #9a0c0c); padding: 9px 14px; border-radius: 6px; box-shadow: 0 2px 0 #4a0303, inset 0 1px 0 rgba(255,255,255,.3), 0 0 18px rgba(255, 40, 20, .35); display: inline-flex; gap: 8px; align-items: center; }
 .hire:active { transform: translateY(2px); box-shadow: 0 0 0 #4a0303, inset 0 1px 0 rgba(255,255,255,.3); }
@@ -311,7 +335,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .legend button.is-on { text-decoration: underline; text-underline-offset: 4px; }
 .legend i { width: 11px; height: 11px; border-radius: 3px; background: linear-gradient(160deg, var(--p-hi), var(--p-mid) 50%, var(--p-lo)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.2); }
 .legend i.all { background: conic-gradient(#2454ff, #ffc814, #00c4ff, #ff6a14, #c41218, #5adc28, #2454ff); }
-.shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 14px; padding-bottom: 10px; }
+.shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 14px; padding: 18px; border-radius: 12px; image-rendering: pixelated;
+  background: linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.66)), var(--tx-grate) 0 0 / 96px 96px; box-shadow: inset 0 0 0 2px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.12), 0 10px 30px -12px rgba(0,0,0,.8); }
+.shelf .cart { image-rendering: auto; }
 .tabs + .shelf { margin-top: 18px; }
 @media (min-width: 1500px) { .shelf { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (max-width: 1100px) and (min-width: 901px) { .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -427,8 +453,9 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
 /* HUD: an original status bar in gunmetal, with the controls */
 .hud { background-image: var(--tex-metal); position: fixed; z-index: 95; left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); bottom: max(10px, env(safe-area-inset-bottom, 0px));
   display: flex; align-items: stretch; height: 52px; border-radius: 12px; overflow: hidden; color: var(--fg);
-  background: var(--tex-metal), linear-gradient(180deg, rgba(70, 74, 82, .86), rgba(26, 28, 32, .94)); background-size: 300px 300px, auto; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(14, 14, 16, .55), rgba(10, 10, 12, .72)), var(--tx-metal, var(--tex-metal)), linear-gradient(180deg, rgba(70, 74, 82, .86), rgba(26, 28, 32, .94)); background-size: auto, 128px 128px, auto; image-rendering: pixelated; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.25), inset 0 -2px 0 rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.6), 0 14px 40px -10px rgba(0,0,0,.8), 0 0 30px -8px var(--glow); }
+.hud::before { content: ""; flex: 0 0 16px; background: var(--tx-hazard) 0 0 / 64px 64px; image-rendering: pixelated; box-shadow: inset -2px 0 0 rgba(0,0,0,.6); }
 .hud__cell { display: flex; flex-direction: column; justify-content: center; padding: 0 16px; border-right: 1px solid rgba(0,0,0,.55); box-shadow: 1px 0 0 rgba(255,255,255,.07); min-width: 0; }
 .hud__cell small { font-family: var(--pixel); font-size: 8.5px; letter-spacing: .12em; color: #a9a3a0; }
 .hud__cell b { font-family: var(--pixel); font-weight: 400; font-size: 17px; line-height: 1.05; color: #ff4a24; text-shadow: 0 0 10px rgba(255, 60, 30, .6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -443,7 +470,8 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
 .hud button.sw.is-on { box-shadow: 0 0 0 2px var(--flame-yellow); }
 .hud #snd { font-family: var(--pixel); font-size: 10px; padding: 2px 4px; color: #d8d2cc; }
 @media (max-width: 1000px) { .hud__keys, .hud__avail { display: none; } }
-@media (max-width: 640px) { .hud__now, .hud__count { display: none; } .hud { justify-content: space-between; } .hud .hire span:last-child { display: none; } .hud__ctl { padding: 0 10px; } }
+@media (max-width: 640px) { .hud__now, .hud__count { display: none; } .hud { justify-content: space-between; } .hud .hire { margin: 0 6px; padding: 9px 10px; } .hud .hire .keycard { display: none; } .hud__ctl { padding: 0 8px; gap: 5px; } .tgl { padding: 7px 8px; } }
+@media (max-width: 640px) { .tv__screen { height: min(calc(100svh - 220px), calc((100vw - 70px) * 1.3)); } .osd h1, .osd [role="heading"] { font-size: clamp(44px, 14vw, 72px) !important; } .start { align-items: center; } }
 .lib { padding-bottom: 110px; }
 .start { padding-bottom: 76px; }
 
@@ -487,7 +515,7 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
 <section class="lib wrap" id="lib" hidden>
   <div class="lib__head plate rivets">
     <h2>Library<small id="libcount"></small></h2>
-    <nav class="lib__links" aria-label="Links"><a href="https://www.instagram.com/robertolacayo.media/" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/roberto-lacayo-765747345/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.behance.net/robertolacayo" target="_blank" rel="noopener">Behance</a><a href="classic.html">Classic site</a><button class="back" id="back">◀ Back to start</button></nav>
+    <nav class="lib__links" aria-label="Links"><a href="https://www.instagram.com/roblabmedia/" target="_blank" rel="noopener">Instagram @roblabmedia</a><a href="https://www.linkedin.com/in/roberto-lacayo-765747345/" target="_blank" rel="noopener">LinkedIn</a><button class="back" id="back">◀ Back to start</button></nav>
   </div>
   <div class="lib__main">
     <div class="lib__left">
@@ -510,23 +538,22 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
           </div>
         </div>
         <div class="console__chin">
-          <div class="pad"><button class="key" id="eject" disabled>Eject</button></div>
+          <div class="dpad" aria-label="Direction pad"><button class="dpad__u" data-dp="up" aria-label="Top view" title="Top view"></button><button class="dpad__l" id="kprev" aria-label="Previous project" title="Previous"></button><button class="dpad__r" id="knext" aria-label="Next project" title="Next"></button><button class="dpad__d" data-dp="down" aria-label="Front view" title="Front view"></button><i></i></div>
           <div class="pad">
-            <button class="key key--round" id="kprev" aria-label="Previous">◀</button>
-            <button class="key key--round" id="knext" aria-label="Next">▶</button>
             <div class="joy" id="joy" aria-label="Joystick: turns the console"><span class="joy__base"></span><span class="joy__stick" id="joyk"></span></div>
             <span class="grille" style="width:54px"></span>
             <span class="led" id="led"></span>
           </div>
+          <div class="fbs" aria-label="Buttons"><button class="fb fb--y" data-fb="y" title="Y: next project" aria-label="Y: next project">Y</button><button class="fb fb--x" data-fb="x" title="X: spin the console" aria-label="X: spin the console">X</button><button class="fb fb--b" id="eject" title="B: eject" aria-label="B: eject the cartridge" disabled>B</button><button class="fb fb--a" data-fb="a" title="A: play or pause" aria-label="A: play or pause">A</button></div>
         </div>
-        <div class="face face--back"><canvas class="guts" data-seed="44" data-batt="1"></canvas><div class="plastic"></div><div class="backlabel"><b>RL-26 VIDEO SYSTEM</b>Model RL-26 · Designed by Roberto Lacayo · Brussels · 2026<br>Plays: TV, music, events, film, shorts. Input: your brand.<i></i></div><div class="backvents"></div><div class="battdoor">2 × AA · OPEN ▸</div></div>
+        <div class="face face--back is-off" id="backface"><canvas class="guts" data-seed="44" data-batt="1"></canvas><div class="plastic"></div><div class="backlabel"><b>RL-26 VIDEO SYSTEM</b>Model RL-26 · Designed by Roberto Lacayo · Brussels · 2026<br>Plays: TV, music, events, film, shorts. Input: your brand.<i></i></div><div class="backvents"></div><div class="battdoor">2 × AA · OPEN ▸</div></div>
         <div class="face face--top"><canvas class="guts" data-seed="61"></canvas><div class="plastic"></div><div class="topslot"></div></div>
         <div class="face face--bottom"><div class="plastic"></div></div>
         <div class="face face--left"><div class="plastic"></div></div>
         <div class="face face--right"><div class="plastic"></div></div>
       </div>
       </div>
-      <div class="viewbar" aria-label="Turn the console"><span>Drag it, or use the stick ·</span><button data-view="front">Front</button><button data-view="top">Top</button><button data-view="back">Back</button><button data-view="spin">Spin</button></div>
+      <div class="viewbar" aria-label="Turn the console"><span>A play · B eject · X spin · Y next · ✚ views · drag it or use the stick ·</span><button data-view="front">Front</button><button data-view="top">Top</button><button data-view="back">Back</button><button data-view="spin">Spin</button></div>
       <div class="now" id="now"></div>
     </div>
     <div class="lib__right">
@@ -1402,13 +1429,14 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   function setBg(name) {
     if (!["hell", "toxic", "tech", "void"].includes(name)) name = "hell";
     if (name === "hell") document.documentElement.removeAttribute("data-bg"); else document.documentElement.setAttribute("data-bg", name);
-    document.querySelectorAll(".hud .sw").forEach(b => b.classList.toggle("is-on", b.dataset.bg === name));
+    document.querySelectorAll("button[data-bg]").forEach(b => b.classList.toggle("is-on", b.dataset.bg === name));
+    try { applyWall(name); } catch (e) {}
     try { localStorage.setItem("rl-bg2", name); } catch (e) {}
     document.querySelectorAll("canvas.flames").forEach(drawFlames);
   }
   let bg0 = "hell"; try { bg0 = localStorage.getItem("rl-bg2") || "hell"; } catch (e) {}
   setBg(bg0);
-  document.querySelectorAll(".hud .sw").forEach(b => b.addEventListener("click", () => { setBg(b.dataset.bg); sfx.tick(); }));
+  document.querySelectorAll("button[data-bg]").forEach(b => b.addEventListener("click", () => { setBg(b.dataset.bg); sfx.tick(); }));
   const sfxBtns = () => document.querySelectorAll("#snd, [data-sfx]");
   const paintSnd = () => sfxBtns().forEach(b => { b.textContent = soundOn ? "SFX on" : "SFX off"; b.classList.toggle("is-on", soundOn); b.setAttribute("aria-pressed", soundOn); });
   paintSnd();
@@ -1538,7 +1566,9 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   /* ---------- 3D: drag the console, use the stick, or pick a view ---------- */
   const rig = $("#rig"), joy = $("#joy"), joyk = $("#joyk");
   let rx = 0, ry = 0, turn = null, spinT = 0;
-  const applyRot = () => { rig.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; };
+  const backface = $("#backface"); let bfT = 0;
+  const showBack = () => { const a = ((ry % 360) + 360) % 360; backface.classList.toggle("is-off", !(a > 90 && a < 270)); };
+  const applyRot = () => { rig.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`; clearTimeout(bfT); if (rig.classList.contains("is-drag")) showBack(); else bfT = setTimeout(showBack, 380); };
   function setView(x, y, quiet) { cancelAnimationFrame(spinT); spinT = 0; rig.classList.remove("is-drag"); ry = ((ry % 360) + 540) % 360 - 180; applyRot(); void rig.offsetWidth; rx = x; ry = y; applyRot(); if (!quiet) sfx.tick(); }
   document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
     const v = b.dataset.view;
@@ -1579,6 +1609,66 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   joy.addEventListener("pointerup", joyEnd); joy.addEventListener("pointercancel", joyEnd);
   addEventListener("keydown", e => { if (lib.hidden || !ql.hidden || document.activeElement !== joy) return; const k = { ArrowLeft: [0, -20], ArrowRight: [0, 20], ArrowUp: [-15, 0], ArrowDown: [15, 0] }[e.key]; if (k) { e.preventDefault(); rx = clamp(rx + k[0], -80, 80); ry += k[1]; applyRot(); } });
   joy.tabIndex = 0;
+
+
+  /* ---------- pixel textures, drawn in code: original 64x64 tiles in the spirit of 90s shooter walls ---------- */
+  function vnoise(R, n) {
+    const v = []; for (let i = 0; i < n * n; i++) v.push(R());
+    const at = (i, j) => v[((j % n + n) % n) * n + ((i % n + n) % n)];
+    return (x, y) => { x = x / 64 * n; y = y / 64 * n; const x0 = Math.floor(x), y0 = Math.floor(y), fx = x - x0, fy = y - y0, sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+      const a = at(x0, y0), b = at(x0 + 1, y0), c = at(x0, y0 + 1), d = at(x0 + 1, y0 + 1); return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy; };
+  }
+  function tile(seed, fn) {
+    const cv = document.createElement("canvas"); cv.width = cv.height = 64;
+    const g = cv.getContext("2d"), img = g.createImageData(64, 64), R = rng(seed);
+    const set = (x, y, c) => { if (x < 0 || y < 0 || x > 63 || y > 63) return; const i = (y * 64 + x) * 4; img.data[i] = clamp(c[0], 0, 255); img.data[i + 1] = clamp(c[1], 0, 255); img.data[i + 2] = clamp(c[2], 0, 255); img.data[i + 3] = 255; };
+    fn(set, R); g.putImageData(img, 0, 0); return cv.toDataURL();
+  }
+  const mul = (c, k) => [c[0] * k, c[1] * k, c[2] * k];
+  const TEX = {
+    flesh: () => tile(11, (set, R) => { const a = vnoise(R, 6), b = vnoise(R, 16), v = vnoise(R, 5);
+      for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const t = a(x, y) * .6 + b(x, y) * .4, vein = Math.abs(Math.sin((x + y * .4) * .12 + v(x, y) * 9));
+        let c = mul([150, 38, 30], .45 + t * .75); if (vein < .07) c = [70, 10, 12]; else if (vein < .13) c = mul([120, 24, 30], .8); if (t > .78) c = [214, 92, 74]; if (R() < .03) c = mul(c, .6); set(x, y, c); } }),
+    brick: (base) => tile(23, (set, R) => { const n = vnoise(R, 16), shades = []; for (let i = 0; i < 64; i++) shades.push(.72 + R() * .38);
+      for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const row = y >> 3, off = row % 2 ? 8 : 0, bx = ((x + off) >> 4), id = (row * 5 + bx) % 64, lx = (x + off) % 16, ly = y % 8;
+        let c = mul(base, shades[id] * (.85 + n(x, y) * .3)); if (ly === 0 || lx === 0) c = mul(base, .35); else if (ly === 1) c = mul(c, 1.22); else if (ly === 7 || lx === 15) c = mul(c, .7); if (R() < .04) c = mul(c, .75); set(x, y, c); } }),
+    tech: (base, light) => tile(37, (set, R) => { const n = vnoise(R, 32);
+      for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { let c = mul(base, .88 + n(x, y) * .22); const cx = x % 32, cy = y % 32;
+        if (cx === 0 || cy === 0) c = mul(base, .4); else if (cx === 1 || cy === 1) c = mul(base, 1.35); else if (cx === 31 || cy === 31) c = mul(base, .6);
+        if (x >= 38 && x <= 58 && y >= 8 && y <= 22 && (y % 3 === 0)) c = mul(base, .35);
+        if (x >= 38 && x <= 58 && y >= 8 && y <= 22 && (y % 3 === 1)) c = mul(base, 1.2);
+        set(x, y, c); }
+      [[4, 4], [27, 4], [4, 27], [27, 27], [36, 4], [59, 4], [36, 27], [59, 27], [4, 36], [27, 36], [4, 59], [27, 59], [36, 36], [59, 36], [36, 59], [59, 59]].forEach(([x, y]) => { set(x, y, mul(base, 1.9)); set(x + 1, y, mul(base, 1.2)); set(x, y + 1, mul(base, 1.2)); set(x + 1, y + 1, mul(base, .45)); });
+      for (let y = 42; y < 46; y++) for (let x = 10; x < 14; x++) set(x, y, light);
+      set(10, 42, [255, 255, 255]);
+      for (let x = 40; x < 56; x++) { set(x, 44, mul(base, .3)); set(x, 50, mul(base, .3)); } for (let y = 44; y < 51; y++) { set(40, y, mul(base, .3)); set(55, y, mul(base, .3)); } }),
+    grate: () => tile(41, (set, R) => { for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const bx = x % 8, by = y % 8; let c = [14, 14, 16];
+        if (bx < 2 || by < 2) { c = [78, 80, 86]; if (bx === 0 || by === 0) c = [128, 130, 138]; if ((bx === 1 && by >= 2) || (by === 1 && bx >= 2)) c = [52, 54, 58]; }
+        if (R() < .05) c = mul(c, .7); set(x, y, c); } }),
+    hazard: () => tile(53, (set, R) => { const n = vnoise(R, 16); for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { let c = ((x + y) >> 3) % 2 ? [232, 182, 22] : [24, 22, 20]; c = mul(c, .78 + n(x, y) * .3); if (R() < .05) c = [90, 70, 40]; set(x, y, c); } }),
+    rust: () => tile(67, (set, R) => { const a = vnoise(R, 8), b = vnoise(R, 32); for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const t = a(x, y) * .55 + b(x, y) * .45; let c = t > .55 ? mul([150, 70, 30], .7 + t * .5) : mul([90, 84, 80], .7 + t * .6); if ((x * 7 + (y >> 2)) % 23 === 0) c = mul(c, .6); set(x, y, c); } }),
+    circuit: () => tile(79, (set, R) => { const n = vnoise(R, 16); for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) set(x, y, mul([16, 44, 22], .8 + n(x, y) * .4));
+      for (let k = 0; k < 14; k++) { let x = Math.floor(R() * 64), y = Math.floor(R() * 64); const horiz = R() < .5; for (let s = 0; s < 10 + R() * 24; s++) { set(x, y, [90, 230, 90]); if (horiz) x = (x + 1) % 64; else y = (y + 1) % 64; } set(x, y, [200, 255, 160]); } })
+  };
+  const tx = {};
+  try {
+    tx.flesh = TEX.flesh(); tx.brick = TEX.brick([92, 84, 78]); tx.techblue = TEX.tech([68, 82, 108], [80, 200, 255]); tx.techgreen = TEX.tech([46, 72, 46], [130, 255, 90]);
+    tx.metal = TEX.tech([96, 98, 104], [255, 70, 40]); tx.grate = TEX.grate(); tx.hazard = TEX.hazard(); tx.rust = TEX.rust(); tx.circuit = TEX.circuit();
+    const root = document.documentElement.style;
+    Object.entries(tx).forEach(([k, v]) => root.setProperty("--tx-" + k, `url(${v})`));
+  } catch (e) {}
+  const WALL = { hell: "flesh", toxic: "circuit", tech: "techblue", void: "brick" };
+  function applyWall(name) { if (tx[WALL[name]]) document.documentElement.style.setProperty("--tx-wall", `url(${tx[WALL[name]]})`); }
+  applyWall(document.documentElement.getAttribute("data-bg") || "hell");
+
+  /* ---------- face buttons and d-pad ---------- */
+  document.querySelectorAll("[data-fb]").forEach(b => b.addEventListener("click", () => {
+    sfx.tick(); const k = b.dataset.fb;
+    if (k === "a") { const v = player.querySelector("video.main"); if (!v) { toast("INSERT A CARTRIDGE FIRST"); return; } if (v.paused) v.play().catch(() => {}); else v.pause(); }
+    else if (k === "x") document.querySelector('[data-view="spin"]').click();
+    else if (k === "y") stepConsole(1);
+  }));
+  document.querySelectorAll("[data-dp]").forEach(b => b.addEventListener("click", () => { if (b.dataset.dp === "up") setView(-58, -12); else setView(0, 0); }));
 
 
   /* ---------- HUD, hire me, toast ---------- */
