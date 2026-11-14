@@ -817,6 +817,9 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
     social: ["Social", "toxic", "Brands on Instagram: I plan, film and edit content that shows the real day behind the brand."]
   };
   const P = [
+    { id: "cube", key: "cube", cat: "film", o: "h", title: "The Cube", client: "Personal film", year: "2026", role: "Idea · Story · On camera", skills: ["write"],
+      desc: "A short film about me: who I was before university and who I was when I left. A Rubik's Cube carries the whole story.",
+      how: "I planned it around the cube. It starts unsolved in a dark room, and it gets solved scene by scene, through an edit suite, a control room, a radio show and a TV set." },
     { id: "showreel", key: "showreel-2026", cat: "reel", o: "h", title: "Showreel 2026", client: "Personal reel", year: "2026", role: "Camera · Edit", skills: ["camera", "edit"],
       desc: "My skills in one reel, and every shot in it is mine.", how: "I filmed all of it myself: festivals, club nights, a TV set, the street. Then I cut the strongest moments to one track." },
     { id: "fathers-day", key: "vtv-padre", cat: "tv", o: "h", title: "Father's Day", client: "VTV Honduras", year: "2026", role: "Idea · Script · Directing · Edit", skills: ["write", "direct", "edit"],
@@ -931,7 +934,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   ];
   P.forEach(p => { p.short = p.client.split(",")[0].split(" × ")[0]; p.color = CAT[p.cat][1]; p.help = p.help || CAT[p.cat][2]; });
   const FULL_SITE = ["showreel-2026", "vtv-padre", "gelatina", "mv-boogieville", "vtv-verano", "mv-retro", "goza-paramour", "elnicoya-live", "vtv-trabajador", "mv-club", "goza-requin", "vtv-meridiano", "declassic", "elnicoya-tope", "vtv-periodista", "imeb-takeover", "vtv-picosas", "goza-grandplace", "vtv-41", "showreel-fiction"];
-  const FULL_NEW = ["mothers-day", "ayd", "goza-ariel", "goza-sept", "goza-july", "goza-night", "calciopoli", "totonero", "fiesta"];
+  const FULL_NEW = ["cube", "mothers-day", "ayd", "goza-ariel", "goza-sept", "goza-july", "goza-night", "calciopoli", "totonero", "fiesta"];
   const YT = { adambk: "tGf2qmTqtsU", alhara: "SyTwoiyePiA", release: "lZkn7xPHf8I", pilot: "uLuUXor0P70" };
   P.forEach(p => { if (FULL_SITE.includes(p.key)) p.full = "media/" + p.key + ".mp4"; else if (FULL_NEW.includes(p.key)) p.full = "media2/" + p.key + ".mp4"; if (YT[p.key]) p.yt = "https://www.youtube.com/watch?v=" + YT[p.key]; });
   const SK = [
@@ -953,6 +956,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
      Frames are taken from the finished videos. Captions describe what is on screen. Numbers are measured from the files. */
   const SB = (key, caps, idx) => (idx || caps.map((c, i) => i)).map((i, k) => ({ img: `console/m2/lv/${key}/s${i}.jpg`, cap: caps[k] }));
   const FR = {
+    cube: { t: [3, 8.5, 13.5, 18, 24, 33, 45, 68], dur: 70.2 },
     "mothers-day": { t: [3.7, 9.8, 15.3, 22.9, 27.4, 35.9, 39.6, 48.7], dur: 50.5, cuts: 19 },
     fiesta: { t: [14.1, 33.6, 67.2, 92.2, 119.4, 151.5, 173.6, 202.3], dur: 212.5, cuts: 101 },
     "vtv-verano": { t: [6.5, 14.5, 22.8, 32.3, 42.4, 51.6, 60.6, 69.7], dur: 74.4, cuts: 45 },
@@ -970,6 +974,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   };
   const tcf = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
   const BOARDS = {
+    cube: SB("cube", ["Before. Hood up, head in my hands, in a dark room full of junk. The cube on the table is a mess.", "I pick up the cube and try. Nothing fits.", "A laptop glowing in the dark: the moment I find the program.", "The plan on a whiteboard. Still in the hood, but now I'm working on it.", "After. New room, new light: an edit suite, cap on, the cube next to the keyboard.", "On air at Radio Picosa, celebrating with the host.", "In front of the green screen in a blazer, talking straight to camera.", "The end. I get up and leave the cube on the desk, solved."]),
     "mothers-day": SB("mothers-day", ["Kitchen. A mum gives her son a bite. We open inside a real home, mid-moment.", "Dining room. Mum and daughter set the table together. Wide, so you see the whole house.", "Hallway. A mum kneels down to her daughter's height.", "Close-up. A mum laughing with her son. The camera goes in closer as the spot builds.", "Two sisters on the sofa. The little one looks up at the older one.", "A mother laughs straight to camera. Natural light, no set.", "A daughter tucks her hair back and smiles. The shy moment before the end.", "Closing card: VTV logo with flowers and #FelicidadesMadres."]),
     fiesta: SB("fiesta", ["Fans in the stands. Every capsule opens on emotion, with the show's lower third.", "Match action, wide broadcast shot, with the info graphic on top.", "A stand full of yellow shirts, cut fast to the music.", "Players celebrating a goal. Celebrations carry the rhythm of the series.", "A pizza oven: the capsules also cover food and life in the host cities.", "\"Cuenta regresiva\": a section bumper. Graphics help 90 pieces feel like one series.", "Live action with the score bar. The template stays the same so the volume stays fast.", "Players arguing with the referee. Conflict keeps people watching to the end."]),
     "vtv-verano": SB("vtv-verano", ["Drone over a pool in the jungle. Summer from the air.", "On the boat, waves breaking. Movement from the first seconds.", "A zip line through the trees.", "Drone over a beach full of swimmers.", "Animated transition in summer colours, between locations.", "A presenter takes a selfie in front of a mural.", "Presenters in hats dancing at a bar. The faces of the channel having fun.", "Closing card: the VTV summer logo."]),
@@ -1031,6 +1036,19 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
       { n: "The idea", sub: "Brief · 4 pitches · moodboard", t: [["Brief", "t-brief"], ["Ideas", "t-ideas"], ["Moodboard", "t-mood"]] },
       { n: "Pre-production", sub: "Script · shot list · storyboard", t: [["Script", "t-script"], ["Shot list", "t-shots"], ["Storyboard", "t-board"]] },
       { n: "The edit", sub: "What changed · credits", t: [["What changed", "t-changes"], ["Credits", "t-credits"]] }
+    ];
+    else if (p.key === "cube") p.levels = [
+      { n: "Storyboard", sub: "8 frames from the film", board: BOARDS.cube },
+      { n: "Behind the scenes", sub: "The story and the cube", notes: [
+        { h: "The story", p: "Who I was before university and who I was when I walked out. At the start I'm closed off and frustrated, hiding in a hoodie. Then I find the program, and by the end I'm someone who trusts himself." },
+        { h: "The Rubik's Cube", p: "The whole plan was built around a Rubik's Cube. It's unsolved at the start and comes together scene by scene, the same way I did. In the last shot I leave it on the desk, solved." },
+        { h: "Before and after", p: "Before is one dark room with hard red light and old junk. After is real studios: an edit suite, a control room, a radio show, a TV set, and a lot more colour." }
+      ] },
+      { n: "The edit", sub: "Rhythm and format", notes: [
+        { h: "Rhythm", p: "70 seconds. The dark part is slow and stays on my face. Once the cube starts coming together, the cuts get faster and the places keep changing." },
+        { h: "Format", p: "Horizontal 16:9, 1080p, 24 fps." },
+        { h: "Why it matters to you", p: p.help }
+      ] }
     ];
     else if (TVSTEPS[p.key]) p.levels = tvLevels(p.key);
     else if (BOARDS[p.key]) p.levels = gozaLevels(p.key);
