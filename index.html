@@ -17,7 +17,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23160807'/%3E%3Crect x='12' y='16' width='40' height='28' rx='5' fill='%235adc28'/%3E%3Ccircle cx='46' cy='52' r='5' fill='%23ff3b1f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Silkscreen&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Silkscreen&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
 /* Layout: a clear-green TV fills the first screen; Press start zooms through it into a library: a smoke-black console with pixel flames on the left, cartridges in 1999–2001 hardware colours on the right.
    Palette from the hardware of the era: iMac G3 Bondi Blue (1998) and the 1999 fruit colours (Tangerine, Lime, Strawberry, Grape, Blueberry), Game Boy Advance translucent Glacier and Fuchsia (2001), and Y2K chrome silver. Hex values are visual approximations. */
@@ -555,6 +555,32 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* ---- two doors: play or skip ---- */
+.start { flex-direction: column; gap: clamp(14px, 2.2vh, 24px); }
+.start .tv { width: min(100%, 1880px, calc((100svh - 290px) * 1.778 + 100px)); }
+@media (min-width: 641px) { .start .tv__screen { height: max(210px, min(calc(100svh - 290px), calc((min(100vw, 1880px) - 150px) * .5625))); } }
+.doors { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: min(100%, 980px); }
+.door { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 92px; padding: 16px 28px; border-radius: 14px; text-align: left; transition: transform .18s, box-shadow .25s, background .25s, color .25s; }
+.door:active { transform: translateY(2px) scale(.99); }
+.door small { font-size: 12px; letter-spacing: .06em; opacity: .75; }
+.door--play { font-family: var(--pixel); font-size: clamp(16px, 1.6vw, 22px); color: var(--phosphor); background: rgba(8, 20, 8, .72); border: 2px solid rgba(125, 255, 58, .55); box-shadow: 0 0 24px rgba(125, 255, 58, .18), inset 0 0 18px rgba(125, 255, 58, .08); }
+.door--play:hover { background: rgba(20, 50, 16, .85); box-shadow: 0 0 36px rgba(125, 255, 58, .35); transform: translateY(-2px); }
+.door--play small { font-family: var(--mono, monospace); color: #f1f6f1; }
+.door--skip, .door--skip * { text-decoration: none; }
+.door--skip { font-family: var(--pixel); font-size: clamp(16px, 1.6vw, 22px); color: #ff5a3c; background: rgba(26, 6, 4, .72); border: 2px solid rgba(255, 70, 40, .6); box-shadow: 0 0 24px rgba(255, 60, 30, .2), inset 0 0 18px rgba(255, 60, 30, .09); }
+.door--skip b { font-family: var(--pixel); font-weight: 400; font-size: inherit; line-height: 1.2; letter-spacing: .08em; text-transform: uppercase; }
+.door--skip small { font-family: var(--mono, monospace); color: #f6eeea; }
+.door--skip i { position: absolute; right: 26px; top: 50%; transform: translateY(-50%); font-style: normal; font-size: 26px; transition: transform .25s; }
+.door--skip:hover { background: rgba(60, 14, 8, .85); box-shadow: 0 0 36px rgba(255, 60, 30, .38); transform: translateY(-2px); }
+.door--skip:hover i { transform: translate(6px, -50%); }
+.lib__links .toskip { color: #eee7db; font-family: "Instrument Serif", serif; font-style: italic; font-size: 17px; letter-spacing: 0; }
+@media (max-width: 700px) {
+  .start .tv { width: 100%; }
+  .start { padding-bottom: 96px; }
+  .doors { grid-template-columns: 1fr; gap: 10px; }
+  .door { min-height: 72px; padding: 12px 20px; }
+}
 </style>
 </head>
 <body>
@@ -574,7 +600,7 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
           <video src="media/hero-loop.mp4" poster="media/hero-loop.jpg" autoplay muted loop playsinline></video>
           <span class="tv__shade"></span>
           <span class="osd">
-            <span><span style="display:block;margin:0;font-weight:700;font-size:clamp(34px, 8vw, 150px);line-height:.86;letter-spacing:-.055em" role="heading" aria-level="1">Roberto<br>Lacayo</span><span class="press">▶ Press start</span></span>
+            <span><span style="display:block;margin:0;font-weight:700;font-size:clamp(34px, 8vw, 150px);line-height:.86;letter-spacing:-.055em" role="heading" aria-level="1">Roberto<br>Lacayo</span><span class="press">▶ Press start to play</span></span>
             <span style="text-align:right;font-size:clamp(11px,1.1vw,16px);color:rgba(241,246,241,.82)" class="osd__sub">Video editor and producer<br>in Brussels</span>
           </span>
         </span>
@@ -586,13 +612,17 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
       <span class="tv__right"><button class="tvbtn" data-music>Music off</button><span class="grille"></span><span class="led is-on"></span></span>
     </div>
   </div>
+  <div class="doors">
+    <button class="door door--play" id="playdoor" type="button">▶ Press start<small>Play the console</small></button>
+    <a class="door door--skip" href="work.html"><b>Skip to portfolio</b><small>Same work, no game</small><i aria-hidden="true">→</i></a>
+  </div>
 </section>
 
 <!-- ============ LIBRARY ============ -->
 <section class="lib wrap" id="lib" hidden>
   <div class="lib__head plate rivets">
     <h2>Library<small id="libcount"></small></h2>
-    <nav class="lib__links" aria-label="Links"><a href="https://www.instagram.com/roblabmedia/" target="_blank" rel="noopener">Instagram @roblabmedia</a><a href="https://www.linkedin.com/in/roberto-lacayo-765747345/" target="_blank" rel="noopener">LinkedIn</a><button class="back" id="back">◀ Back to start</button></nav>
+    <nav class="lib__links" aria-label="Links"><a class="toskip" href="work.html">Skip to portfolio →</a><a href="https://www.instagram.com/roblabmedia/" target="_blank" rel="noopener">Instagram @roblabmedia</a><a href="https://www.linkedin.com/in/roberto-lacayo-765747345/" target="_blank" rel="noopener">LinkedIn</a><button class="back" id="back">◀ Back to start</button></nav>
   </div>
   <div class="lib__main">
     <div class="lib__left">
@@ -1973,5 +2003,6 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
 })();
 </script>
 
+<script>document.getElementById("playdoor").addEventListener("click",()=>document.getElementById("screen").click());</script>
 </body>
 </html>
