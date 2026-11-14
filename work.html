@@ -366,6 +366,8 @@ const DATA = {"CAT":{"reel":["Reels","gunmetal","A sample of what your brand cou
     if (p.full) stage.innerHTML = `<video src="${p.full}" poster="console/m2/${p.key}.jpg" controls autoplay playsinline></video>`;
     else if (p.yt) stage.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId(p.yt)}?autoplay=1&rel=0" title="${esc(p.title)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
     else stage.innerHTML = `<video src="console/m2/${p.key}-p.mp4" poster="console/m2/${p.key}.jpg" controls autoplay muted loop playsinline></video>`;
+    // iPhone: arrancar dentro del toque (con sonido); si no se puede, silenciado
+    const sv = stage.querySelector("video"); if (sv) sv.play().catch(() => { sv.muted = true; sv.play().catch(() => {}); });
     $("#v-cat").textContent = CAT[p.cat][0];
     $("#v-title").textContent = p.title;
     $("#v-meta").textContent = [p.client, p.year].filter(Boolean).join(" · ");

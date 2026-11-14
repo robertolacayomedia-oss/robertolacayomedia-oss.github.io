@@ -1430,6 +1430,22 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
 
   /* ---------- insert / eject ---------- */
   const player = $("#player"), cap = $("#cap"), led = $("#led"), now = $("#now"), boot = $("#boot");
+  /* iPhone/iPad (y Android): un único <video> para la pantalla, desbloqueado en el primer toque. Safari solo deja
+     reproducir (con sonido) si el play nace de un toque; el cartucho arranca después de las animaciones, cuando el toque
+     ya caducó. Un elemento que ya se reprodujo con un toque queda libre para reproducir solo después. */
+  const mainV = document.createElement("video");
+  mainV.className = "main"; mainV.controls = true; mainV.playsInline = true; mainV.preload = "auto";
+  mainV.setAttribute("playsinline", ""); mainV.setAttribute("webkit-playsinline", "");
+  let vUnlocked = false;
+  function unlockV() {
+    if (vUnlocked) return; vUnlocked = true;
+    if (mainV.getAttribute("src")) { mainV.play().catch(() => { vUnlocked = false; }); return; }
+    mainV.src = "media/hero-loop.mp4";
+    const pr = mainV.play();
+    if (pr) pr.then(() => { if (mainV.getAttribute("src") === "media/hero-loop.mp4") { mainV.pause(); mainV.removeAttribute("src"); mainV.load(); } })
+      .catch(() => { vUnlocked = false; if (mainV.getAttribute("src") === "media/hero-loop.mp4") { mainV.removeAttribute("src"); mainV.load(); } });
+  }
+  ["touchend", "pointerup", "click", "keydown"].forEach(t => addEventListener(t, unlockV, { capture: true, passive: true }));
   function insert(k, opts) { queue = queue.then(() => doInsert(k, opts || {})).catch(err => console.error(err)); return queue; }
   function flyFrames(a, r, lift) {
     const s0 = a.width / r.width;
@@ -1519,16 +1535,17 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   /* ---------- the console screen ---------- */
   function setVideo(p, opts) {
     const film = !!(opts && opts.film), src = film ? (p.film || p.full) : `console/m2/${p.key}-p.mp4`, poster = film ? (p.poster || `console/m2/${p.key}.jpg`) : `console/m2/${p.key}.jpg`;
-    player.innerHTML = (p.o === "v" ? `<video class="bgblur" src="console/m2/${p.key}-p.mp4" muted loop playsinline autoplay aria-hidden="true"></video>` : "") +
-      `<video class="main" src="${src}" poster="${poster}" playsinline controls ${opts && opts.loop ? "loop" : ""}></video>`;
-    const v = player.querySelector("video.main");
+    player.innerHTML = p.o === "v" ? `<video class="bgblur" src="console/m2/${p.key}-p.mp4" poster="console/m2/${p.key}.jpg" muted loop playsinline webkit-playsinline autoplay aria-hidden="true"></video>` : "";
+    const v = mainV; v.onended = null; v.loop = !!(opts && opts.loop); v.poster = poster; v.muted = false; v.src = src;
+    player.appendChild(v);
+    const bg = player.querySelector("video.bgblur"); if (bg) bg.play().catch(() => {});
     v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
     return v;
   }
   function playItem() {
     const p = pl.list[pl.i], v = setVideo(p, { loop: pl.list.length === 1 });
     cap.innerHTML = `<span>${inserted.x.name.toUpperCase()} · ${pl.i + 1}/${pl.list.length}</span><span>${p.title}</span>`;
-    v.addEventListener("ended", () => { if (inserted && inserted.kind === "s" && pl.list.length > 1) { pl.i = (pl.i + 1) % pl.list.length; playItem(); renderNow(); } });
+    v.onended = () => { if (inserted && inserted.kind === "s" && pl.list.length > 1) { pl.i = (pl.i + 1) % pl.list.length; playItem(); renderNow(); } };
   }
   function crt(el) { if (reduce) return; el.classList.remove("cs__on"); void el.offsetWidth; el.classList.add("cs__on"); }
   async function powerOn() {
