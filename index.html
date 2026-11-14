@@ -44,16 +44,22 @@
 :root[data-bg="void"] { --bg-top: #050505; --bg-mid: #080808; --bg-bot: #0e0e0e; --glow: rgba(255, 59, 31, .18); --grid: rgba(242, 230, 217, .12); --dot: rgba(255, 255, 255, .03); }
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { background: var(--bg-mid); }
-body { margin: 0; color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden;
-  background: radial-gradient(var(--dot) 1px, transparent 1.3px) 0 0 / 18px 18px, linear-gradient(180deg, var(--bg-top), var(--bg-mid) 55%, var(--bg-bot)) fixed; background-color: var(--bg-mid); }
+/* the page colour sits on <html>, so the textured world (z-index -1) paints above it and under everything else */
+html { background: radial-gradient(var(--dot) 1px, transparent 1.3px) 0 0 / 18px 18px, linear-gradient(180deg, var(--bg-top), var(--bg-mid) 55%, var(--bg-bot)) fixed; background-color: var(--bg-mid); }
+body { margin: 0; color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; background: transparent; }
 /* textures, all procedural: a flesh wall, brushed metal plates, scratches */
-:root { --tex-flesh: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.019' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23ff8a6a' surfaceScale='7' result='l'%3E%3CfeDistantLight azimuth='235' elevation='34'/%3E%3C/feDiffuseLighting%3E%3CfeTurbulence type='turbulence' baseFrequency='0.02' numOctaves='2' seed='3' stitchTiles='stitch' result='v'/%3E%3CfeColorMatrix in='v' type='matrix' values='0 0 0 0 .25  0 0 0 0 0  0 0 0 0 0  -2.2 0 0 0 1.25' result='veins'/%3E%3CfeComposite in='l' in2='SourceGraphic' operator='arithmetic' k1='1' k2='0' k3='0' k4='0' result='flesh'/%3E%3CfeMerge%3E%3CfeMergeNode in='flesh'/%3E%3CfeMergeNode in='veins'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='520' height='520' fill='%236e1610' filter='url(%23f)'/%3E%3C/svg%3E"); --tex-metal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.02' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55  0 0 0 0 .56  0 0 0 0 .6  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23m)'/%3E%3C/svg%3E"); --tex-scratch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.004 0.6' numOctaves='1' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 -9 0 3.6'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23s)'/%3E%3C/svg%3E"); --flesh-op: .78; --flesh-filter: none; }
-:root[data-bg="toxic"] { --flesh-op: .6; }
-:root[data-bg="tech"] { --flesh-op: .55; }
-:root[data-bg="void"] { --flesh-op: .4; }
-.world__flesh { position: absolute; inset: 0; background: var(--tx-wall, var(--tex-flesh)) 0 0 / 256px 256px; image-rendering: pixelated; opacity: var(--flesh-op); filter: var(--flesh-filter);
-  -webkit-mask-image: radial-gradient(110% 75% at 50% 20%, rgba(0,0,0,.35) 10%, #000 70%); mask-image: radial-gradient(110% 75% at 50% 20%, rgba(0,0,0,.35) 10%, #000 70%); }
+:root { --tex-flesh: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011 0.019' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23ff8a6a' surfaceScale='7' result='l'%3E%3CfeDistantLight azimuth='235' elevation='34'/%3E%3C/feDiffuseLighting%3E%3CfeTurbulence type='turbulence' baseFrequency='0.02' numOctaves='2' seed='3' stitchTiles='stitch' result='v'/%3E%3CfeColorMatrix in='v' type='matrix' values='0 0 0 0 .25  0 0 0 0 0  0 0 0 0 0  -2.2 0 0 0 1.25' result='veins'/%3E%3CfeComposite in='l' in2='SourceGraphic' operator='arithmetic' k1='1' k2='0' k3='0' k4='0' result='flesh'/%3E%3CfeMerge%3E%3CfeMergeNode in='flesh'/%3E%3CfeMergeNode in='veins'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect width='520' height='520' fill='%236e1610' filter='url(%23f)'/%3E%3C/svg%3E"); --tex-metal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.02' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55  0 0 0 0 .56  0 0 0 0 .6  0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23m)'/%3E%3C/svg%3E"); --tex-scratch: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.004 0.6' numOctaves='1' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 -9 0 3.6'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23s)'/%3E%3C/svg%3E"); --flesh-op: .55; --flesh-filter: none; }
+:root[data-bg="toxic"] { --flesh-op: .5; }
+:root[data-bg="tech"] { --flesh-op: .5; }
+:root[data-bg="void"] { --flesh-op: .32; }
+.world__deep { position: absolute; inset: -14%; perspective: 900px; transform-style: preserve-3d; }
+.world__flesh, .world__magma { position: absolute; inset: 0; image-rendering: pixelated; background-position: 0 var(--sy, 0px);
+  transform: rotateX(var(--wx, 0deg)) rotateY(var(--wy, 0deg)) translate3d(var(--px, 0px), 0, -70px); will-change: transform; }
+.world__flesh { background-image: var(--tx-lava, var(--tex-flesh)); background-size: 384px 384px; opacity: var(--flesh-op); }
+.world__magma { background-image: var(--tx-magma); background-size: 384px 384px; mix-blend-mode: screen; opacity: .3; animation: magma 5.5s ease-in-out infinite alternate; }
+@keyframes magma { 0% { opacity: .08; } 55% { opacity: .28; } 100% { opacity: .15; } }
+.world__shade { position: absolute; inset: 0; background: radial-gradient(85% 70% at 50% 42%, rgba(0,0,0,.34), rgba(0,0,0,.82) 78%, #000), linear-gradient(180deg, rgba(0,0,0,.65), transparent 28%, transparent 72%, rgba(0,0,0,.55)); }
+@media (prefers-reduced-motion: reduce) { .world__magma { animation: none; } }
 .world__vignette { position: absolute; inset: 0; background: radial-gradient(100% 70% at 50% 40%, transparent 40%, rgba(0,0,0,.75)); }
 .plate { position: relative; background: linear-gradient(180deg, rgba(10,10,12,.42), rgba(10,10,12,.6)), var(--tx-metal, var(--tex-metal)), linear-gradient(180deg, #4a4e55, #24272c); background-size: auto, 192px 192px, auto; image-rendering: pixelated; color: var(--fg);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -2px 0 rgba(0,0,0,.6), 0 0 0 1px rgba(0,0,0,.7), 0 10px 30px -12px rgba(0,0,0,.8); }
@@ -64,7 +70,7 @@ body { margin: 0; color: var(--fg); font-family: var(--sans); font-size: 14px; l
 .world__glow { position: absolute; left: -10%; right: -10%; bottom: -30vh; height: 75vh; background: radial-gradient(60% 55% at 50% 100%, var(--glow), transparent 70%); }
 .world__horizon { position: absolute; left: 0; right: 0; bottom: 38vh; height: 1px; background: linear-gradient(90deg, transparent, var(--grid), transparent); box-shadow: 0 0 18px 2px var(--glow); }
 .world__floor { position: absolute; left: -50%; right: -50%; bottom: -2vh; height: 40vh; transform: perspective(320px) rotateX(64deg); transform-origin: 50% 100%;
-  background: repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 64px), repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 64px);
+  background: repeating-linear-gradient(90deg, var(--grid) 0 1px, transparent 1px 64px), repeating-linear-gradient(0deg, var(--grid) 0 1px, transparent 1px 64px), linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), var(--tx-lava, none) 0 0 / 64px 64px; image-rendering: pixelated;
   -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 92%); mask-image: linear-gradient(to top, #000 10%, transparent 92%); animation: floor 3.2s linear infinite; }
 @keyframes floor { to { background-position: 0 64px, 0 64px; } }
 .world canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -243,6 +249,47 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   .lib .shelf, .lib .tabs + .shelf { display: flex; grid-template-columns: none; overflow-x: auto; overflow-y: hidden; gap: 12px; padding: 14px; margin-top: 0; scroll-snap-type: x mandatory; scroll-padding: 14px; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
   .lib .shelf .cell { flex: 0 0 31%; max-width: 150px; min-width: 104px; scroll-snap-align: start; }
 }
+/* level pages */
+.lv-top { margin: 0 0 22px; }
+.lv-top span { font-family: var(--pixel); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #ffb21f; }
+.lv-top h3 { margin: 6px 0 2px; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.1; letter-spacing: -.02em; }
+.lv-top p { margin: 0; color: var(--qm); font-size: 13px; }
+.lv-sec + .lv-sec { margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--ql); }
+.lv-h { margin: 0 0 14px; font-family: var(--pixel); font-weight: 400; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--phosphor); }
+.sb { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 12px; }
+.sb--v { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 820px; }
+.sb figure { margin: 0; }
+.sb__f { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px; background: #16221b; box-shadow: 0 0 0 1px var(--ql); }
+.sb--v .sb__f { aspect-ratio: 9 / 16; }
+.sb__f img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sb__n, .sb__tc { position: absolute; top: 5px; font-family: var(--pixel); font-size: 9px; padding: 1px 5px; border-radius: 3px; background: rgba(5, 12, 8, .78); }
+.sb__n { left: 6px; color: var(--phosphor); } .sb__tc { right: 6px; color: #eaf3ec; font-family: var(--mono); }
+.sb figcaption { margin-top: 8px; font-size: 12.5px; line-height: 1.4; color: rgba(234,243,236,.78); }
+.lvnotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.lvnotes section { padding: 16px 18px; border-radius: 8px; border: 1px solid var(--ql); background: rgba(255,255,255,.02); }
+.lvnotes span { display: block; font-family: var(--pixel); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #ffb21f; margin-bottom: 6px; }
+.lvnotes p { margin: 0; font-size: 14px; line-height: 1.55; color: rgba(234,243,236,.86); }
+.lv-next { display: flex; justify-content: space-between; gap: 10px; margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--ql); }
+.lv-next button { font-family: var(--pixel); font-size: 10.5px; letter-spacing: .06em; padding: 11px 14px; border-radius: 6px; color: #1a0d00; background: #ffb21f; box-shadow: 0 3px 0 #7a3c00; }
+.lv-next button:first-child:not(:last-child) { color: var(--qp); background: rgba(255,255,255,.08); box-shadow: 0 3px 0 rgba(0,0,0,.5); }
+.lv-next button:active { transform: translateY(2px); box-shadow: none; }
+@media (max-width: 760px) { .sb { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sb--v { grid-template-columns: repeat(3, minmax(0, 1fr)); } .lvnotes { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .ql__body { padding: 18px 14px 26px; font-size: 13px; }
+  .ql__title { font-size: 9px; }
+  .lv-top { margin-bottom: 16px; } .lv-top h3 { font-size: 22px; }
+  .q-big { font-size: 17px; line-height: 1.3; }
+  .q-txt, .alt p, .notes p, .lvnotes p { font-size: 13px; }
+  .alts { grid-template-columns: 1fr; } .alt { padding: 12px; } .alt h4 { font-size: 15px; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .facts b { font-size: 13px; }
+  .board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 8px; } .panel figcaption { font-size: 11.5px; }
+  .ql__shell { min-width: 0; max-width: 100%; }
+  .tbl table { min-width: 0; font-size: 12.5px; } .tbl thead { display: none; } .tbl tr { display: block; padding: 12px 0; border-bottom: 1px solid var(--ql); } .tbl td { display: block; border: 0; padding: 2px 0; } td.tc { width: auto; font-size: 10.5px; color: #ffb21f; }
+  .txtfile { font-size: 11.5px; line-height: 1.7; }
+  .sb { gap: 14px 8px; } .sb--v { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sb figcaption { font-size: 11.5px; }
+  .lvnotes section { padding: 13px 14px; }
+  .lv-next button { font-size: 9.5px; padding: 10px 11px; }
+}
 /* d-pad and face buttons */
 .dpad { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
 .dpad button, .dpad i { position: absolute; width: 26px; height: 26px; background: #34343a; }
@@ -293,7 +340,20 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .now dl { margin: 16px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 18px; font-size: 12.5px; padding-top: 12px; border-top: 1px solid var(--line); }
 .now dt { color: var(--muted); font-family: var(--mono); font-size: 11px; }
 .now dd { margin: 0; }
-.now__files { margin-top: 24px; }
+.now__files, .now__lv { margin-top: 24px; }
+/* level select: three pixel buttons inside the cartridge */
+.lvls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lvl { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 92px; padding: 12px 12px 11px; border-radius: 8px; text-align: left; color: var(--fg); image-rendering: pixelated;
+  background: linear-gradient(180deg, rgba(20, 8, 6, .62), rgba(10, 6, 6, .82)), var(--tx-metal, var(--tex-metal)); background-size: auto, 128px 128px;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.7), inset 0 2px 0 rgba(255,255,255,.16), 0 4px 0 rgba(0,0,0,.6); transition: transform .15s var(--ease), box-shadow .15s, filter .2s; }
+.lvl::after { content: ""; position: absolute; right: 10px; top: 12px; width: 8px; height: 8px; background: var(--red); box-shadow: 0 0 10px var(--red); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.lvl__n { font-family: var(--pixel); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #ffb21f; text-shadow: 0 0 8px rgba(255, 140, 20, .6); }
+.lvl b { font-size: 14px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
+.lvl small { font-size: 11px; line-height: 1.3; color: var(--muted); }
+.lvl:hover, .lvl:focus-visible { transform: translateY(-2px); filter: brightness(1.18); box-shadow: inset 0 0 0 2px #ff5a1f, inset 0 2px 0 rgba(255,255,255,.2), 0 6px 0 rgba(0,0,0,.6), 0 0 24px -6px rgba(255, 90, 31, .7); }
+.lvl:active { transform: translateY(2px); box-shadow: inset 0 0 0 2px #ff5a1f, 0 1px 0 rgba(0,0,0,.6); }
+.lvl.is-selected { box-shadow: inset 0 0 0 2px #ffb21f, 0 4px 0 rgba(0,0,0,.6); }
+@media (max-width: 520px) { .lvls { gap: 6px; } .lvl { min-height: 84px; padding: 10px 9px 9px; } .lvl b { font-size: 12.5px; } .lvl small { font-size: 10px; } .lvl::after { display: none; } }
 .now__fhead { display: flex; justify-content: space-between; font-family: var(--pixel); font-size: 10px; letter-spacing: .08em; color: var(--muted); margin-bottom: 14px; }
 .files { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 6px; }
 @media (max-width: 460px) { .files { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -393,7 +453,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- Quick Look in a clear window ---------- */
 .ql { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .ql__dim { position: absolute; inset: 0; background: rgba(20, 40, 28, .35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.ql__shell { position: relative; width: min(1060px, 100%); max-height: 100%; display: flex; flex-direction: column; padding: 0 10px 10px; border-radius: 18px; }
+.ql__shell { position: relative; min-width: 0; width: min(1060px, 100%); max-height: 100%; display: flex; flex-direction: column; padding: 0 10px 10px; border-radius: 18px; }
 .ql__bar { position: relative; z-index: 2; height: 38px; display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 10px; padding: 0 6px; }
 .ql__bar::before { content: ""; position: absolute; inset: 6px 0 4px; border-radius: 8px; background: repeating-linear-gradient(180deg, rgba(255,255,255,.28) 0 1px, transparent 1px 3px); z-index: -1; }
 .lights { display: flex; gap: 7px; position: relative; }
@@ -500,7 +560,7 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
 <body>
 
 
-<div class="world" aria-hidden="true"><div class="world__flesh"></div><div class="world__vignette"></div><div class="world__glow"></div><div class="world__horizon"></div><div class="world__floor"></div><canvas id="embers"></canvas></div>
+<div class="world" aria-hidden="true"><div class="world__deep"><div class="world__flesh"></div><div class="world__magma"></div></div><div class="world__shade"></div><div class="world__vignette"></div><div class="world__glow"></div><div class="world__horizon"></div><div class="world__floor"></div><canvas id="embers"></canvas></div>
 
 <!-- ============ START ============ -->
 <section class="start wrap" id="start">
@@ -621,7 +681,7 @@ tr.is-cut td { color: var(--qm); text-decoration: line-through; text-decoration-
     <div class="ql__bar">
       <div class="lights"><button aria-label="Close preview" id="qlclose"></button><i></i><i></i></div>
       <div class="ql__title" id="qltitle"></div>
-      <div class="ql__nav"><button id="qlprev" aria-label="Previous folder">◀</button><button id="qlnext" aria-label="Next folder">▶</button></div>
+      <div class="ql__nav"><button id="qlprev" aria-label="Previous level">◀</button><button id="qlnext" aria-label="Next level">▶</button></div>
     </div>
     <div class="ql__body" id="qlbody"></div>
   </div>
@@ -887,6 +947,94 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   ];
   const SKC = ["brass", "gunmetal", "toxic"];
   SK.forEach((s, i) => { s.list = P.filter(p => p.skills.includes(s.id)); s.color = SKC[i % 3]; });
+
+
+  /* ---------- levels inside a cartridge: storyboard (real frames of the video), behind the scenes, the edit ----------
+     Frames are taken from the finished videos. Captions describe what is on screen. Numbers are measured from the files. */
+  const SB = (key, caps, idx) => (idx || caps.map((c, i) => i)).map((i, k) => ({ img: `console/m2/lv/${key}/s${i}.jpg`, cap: caps[k] }));
+  const FR = {
+    "mothers-day": { t: [3.7, 9.8, 15.3, 22.9, 27.4, 35.9, 39.6, 48.7], dur: 50.5, cuts: 19 },
+    fiesta: { t: [14.1, 33.6, 67.2, 92.2, 119.4, 151.5, 173.6, 202.3], dur: 212.5, cuts: 101 },
+    "vtv-verano": { t: [6.5, 14.5, 22.8, 32.3, 42.4, 51.6, 60.6, 69.7], dur: 74.4, cuts: 45 },
+    "vtv-trabajador": { t: [1.2, 4.5, 8.3, 10.8, 14.1, 17.5, 20.4, 23], dur: 25, cuts: 17 },
+    "vtv-meridiano": { t: [1.5, 8.7, 14.3, 19.9, 25.3, 31.1, 35.3, 43.8], dur: 45.2, cuts: 20 },
+    "vtv-periodista": { t: [1.9, 6.1, 11, 15, 19.1, 23.1, 26.1, 30], dur: 33.2, cuts: 22 },
+    "vtv-picosas": { t: [2.8, 6.7, 13.8, 19.9, 25.7, 29.1, 36.1, 43.7], dur: 44.5, cuts: 15 },
+    "vtv-41": { t: [2.5, 5.4, 9.9, 13.5, 15.5, 21.8, 25.1, 29.3], dur: 30.9, cuts: 15 },
+    "goza-ariel": { t: [2, 6, 9.9, 13.1, 17.9, 21.9, 25.8, 29], dur: 31.8 },
+    "goza-paramour": { t: [2.3, 6.9, 11.5, 15.3, 20.7, 25.3, 29.9, 33.6], dur: 36.7 },
+    "goza-sept": { t: [2.1, 4.2, 6, 10.9, 13.2, 15.4, 18.3, 19.6], dur: 22.4, cuts: 7 },
+    "goza-july": { t: [1.3, 3.7, 6.7, 8.1, 11.5, 13.7, 15.4, 18.8], dur: 19.9, cuts: 9 },
+    "goza-requin": { t: [1.9, 4.3, 6.6, 8, 11.9, 14.4, 17.1, 19.4], dur: 21.1, cuts: 10 },
+    "goza-night": { t: [2, 4.1, 9.4, 14.2, 16.4, 21.6, 27.2, 30.1], dur: 32.4, cuts: 11 }
+  };
+  const tcf = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  const BOARDS = {
+    "mothers-day": SB("mothers-day", ["Kitchen. A mum gives her son a bite. We open inside a real home, mid-moment.", "Dining room. Mum and daughter set the table together. Wide, so you see the whole house.", "Hallway. A mum kneels down to her daughter's height.", "Close-up. A mum laughing with her son. The camera goes in closer as the spot builds.", "Two sisters on the sofa. The little one looks up at the older one.", "A mother laughs straight to camera. Natural light, no set.", "A daughter tucks her hair back and smiles. The shy moment before the end.", "Closing card: VTV logo with flowers and #FelicidadesMadres."]),
+    fiesta: SB("fiesta", ["Fans in the stands. Every capsule opens on emotion, with the show's lower third.", "Match action, wide broadcast shot, with the info graphic on top.", "A stand full of yellow shirts, cut fast to the music.", "Players celebrating a goal. Celebrations carry the rhythm of the series.", "A pizza oven: the capsules also cover food and life in the host cities.", "\"Cuenta regresiva\": a section bumper. Graphics help 90 pieces feel like one series.", "Live action with the score bar. The template stays the same so the volume stays fast.", "Players arguing with the referee. Conflict keeps people watching to the end."]),
+    "vtv-verano": SB("vtv-verano", ["Drone over a pool in the jungle. Summer from the air.", "On the boat, waves breaking. Movement from the first seconds.", "A zip line through the trees.", "Drone over a beach full of swimmers.", "Animated transition in summer colours, between locations.", "A presenter takes a selfie in front of a mural.", "Presenters in hats dancing at a bar. The faces of the channel having fun.", "Closing card: the VTV summer logo."]),
+    "vtv-trabajador": SB("vtv-trabajador", ["Sunrise over the mountains. The working day starts before the city wakes up.", "A market vendor sorting vegetables.", "Gloved hands at a food stall.", "A flower seller smiling at camera.", "A man moving a tower of boxes on a hand truck.", "A street cook at the grill.", "People at work on the street.", "Closing card: Felicidades Trabajadores."]),
+    "vtv-meridiano": SB("vtv-meridiano", ["Opening graphic: \"Último minuto\". It sounds like breaking news from frame one.", "A reporter on the phone in the street.", "A street interview, the VTV mic in frame.", "The crowd in a busy market: the people the news is about.", "Zoom blur on the anchor with the word VERDAD.", "The anchor on set, with the show's social accounts on the screen behind.", "The anchor closes and invites you to watch.", "Closing card: VTV, \"somos todos\"."]),
+    "vtv-periodista": SB("vtv-periodista", ["Two anchors on the news set.", "A reporter editing on a laptop: the work you never see on air.", "A reporter to camera with the VTV mic, outside.", "A reporter in a hospital corridor.", "A reporter in the street.", "An anchor on the news set.", "The morning show presenters on their set.", "Closing card: 25 de mayo, Día del Periodista Hondureño."]),
+    "vtv-picosas": SB("vtv-picosas", ["Rafael Díaz Alcerro with his mic and his name on screen.", "He talks to people in the street. The show's idea in one shot.", "Hands on the radio desk: the show is also on the radio.", "A band on stage, with the time slot: Monday to Friday, 3 PM.", "A singer in a charro suit.", "Close-up of a singer in a hat.", "A guest on set with a gift basket.", "Closing card: Picosa TV and Picosa Radio."]),
+    "vtv-41": SB("vtv-41", ["The studio today: crew and presenters moving between sets.", "A presenter laughing behind the scenes.", "A light leak, to move between the present and the past.", "A camera operator filming a presenter.", "The morning show set during an interview.", "Archive: the channel's old footage.", "Presenters celebrating on set.", "Closing card: VTV 41 años, ¡Junto a ti!"]),
+    "goza-ariel": SB("goza-ariel", ["The founder introduces himself in a straw hat, the flag of the night on top.", "\"Vente\": he invites you in, straight to camera.", "\"Con nosotros\". Big subtitles, so it works with the sound off.", "\"Vamos a tener comida\": what you get if you come.", "He explains the night with his hands. One take, punch-ins to keep the rhythm.", "The main point: you don't need to know how to dance.", "\"Nos vemos\": he waves goodbye close to the lens.", "Ticket card with goza.be. Every promo ends on how to buy."], [0, 1, 2, 3, 4, 5, 6, 7]),
+    "goza-paramour": SB("goza-paramour", ["\"With my best friend\": the host opens on the dance floor in the sun.", "\"At Paramour\": the place, said in the first seconds.", "\"And no, my friend, you…\": he talks to the viewer, not to an audience.", "Close-up, so you feel invited by a person.", "\"Salsa workshops\": what the night includes.", "Wide shot with the towers: Brussels in the background.", "He tips his hat into the lens.", "Ticket card with goza.be."]),
+    "goza-sept": SB("goza-sept", ["On the Grand-Place: \"This September 12th\".", "The red dance floor of the last party.", "\"At Paramour.\" with a location pin.", "\"We're going to have a great time\" over real dancers.", "The host waves at the camera.", "The poster: 12 September, 21:00 to 3:00.", "The poster with the address and prices.", "The poster stays on screen long enough to take a screenshot."]),
+    "goza-july": SB("goza-july", ["The GOZA logo over a full room.", "\"Jueves 30 de julio\" over the dance floor.", "\"Featuring El Nicoya\" at the decks.", "The DJ close-up: who is playing.", "The address: Paramour, Rue d'Arlon 104.", "A couple dancing in the light.", "The GOZA card.", "The ticket card with goza.be."]),
+    "goza-requin": SB("goza-requin", ["\"Vendredi 06 nov.\": the date first.", "\"The GOZA begins at…\" over people on the stairs.", "\"Don't…\": one word per cut, fast.", "The host in his hat: \"your…\".", "He laughs into the lens.", "\"Don't miss out on GOZA\".", "The poster: GOZA × Le Requin d'Or.", "The poster holds, so you can read the details."]),
+    "goza-night": SB("goza-night", ["The GOZA logo over a face in the red light.", "Moving through the room, handheld.", "Next to the speakers, close to the DJ booth.", "A couple dancing close.", "The DJ at the laptop, people dancing around.", "Feet on the dance floor.", "Someone dancing with their phone in hand.", "The GOZA logo to close."])
+  };
+  Object.keys(BOARDS).forEach(k => BOARDS[k].forEach((f, i) => { f.tc = tcf(FR[k].t[i]); }));
+
+  const pace = k => { const f = FR[k]; return f.cuts ? `${f.dur.toFixed(0)} seconds, ${f.cuts + 1} shots: a new shot every ${(f.dur / (f.cuts + 1)).toFixed(1)} seconds on average.` : `${f.dur.toFixed(0)} seconds, mostly one take with punch-ins.`; };
+
+  const BTS = {
+    tv: (p, steps) => [
+      { h: "What the channel needed", p: steps[0] },
+      { h: "My idea", p: steps[1] },
+      { h: "The shoot", p: steps[2] },
+      { h: "The edit", p: steps[3] }
+    ],
+    goza: [
+      { h: "What GOZA needed", p: "Sell tickets online before the night. GOZA is a Latin party in Brussels, and every promo has one job: make you want to be there and show you where to buy." },
+      { h: "The plan", p: "Few words, a real person and a clear date. The host speaks to camera like he's talking to one friend, the place and the date come in the first seconds, and it always ends on the ticket card." },
+      { h: "How we shot it", p: "A lav mic on the host, outside in daylight or at the last party. Short lines, several takes, and I keep the one with the most energy. Dance-floor shots come from the previous GOZA, so you see real people having fun." },
+      { h: "The edit", p: "Vertical 9:16 for Instagram. Big subtitles, because most people watch with the sound off. Cuts on the beat, punch-ins instead of cutaways, and the poster stays on screen long enough to screenshot." }
+    ]
+  };
+  const TVSTEPS = {
+    "mothers-day": ["A Mother's Day spot for the national broadcast that families would recognise as their own.", "Small, true moments at home instead of a big speech. Mothers and their kids doing normal things together.", "Real homes and real families, with natural light. I directed them to keep doing what they do, and waited for the moment.", "Wide shots first to place you in the house, then closer and closer as the spot builds, and the card at the end."],
+    fiesta: ["90 short capsules for VTV's World Cup coverage: teams, players and host cities, every day, on time.", "Treat the 90 pieces as one series: the same opening, lower thirds, bumpers and rhythm, so viewers recognise it at once.", "Most of the material came from match footage and archive. My work was the script and the selection of moments.", "One Premiere template for all the capsules. With that, each new piece was about the story, not about rebuilding graphics."],
+    "vtv-verano": ["A summer jingle with the faces of the channel: news, sports and entertainment together.", "Take the presenters out of the studio and into Honduras in summer: water, jungle, colour.", "I coordinated the presenters and took them to Roatán and Cantarranas, and directed them on location. Drone shots for scale.", "Cut to the jingle, with animated transitions between places, and the summer logo to close."],
+    "vtv-trabajador": ["A Labor Day piece that thanks people who work every day.", "Follow a working day from sunrise: the people who keep the country going, not speeches.", "We started at sunrise and filmed in markets and on the street, close to the hands and the faces.", "Short and warm: one moment per worker, then the Felicidades Trabajadores card."],
+    "vtv-meridiano": ["A promo for Impacto Meridiano, VTV's midday news.", "Sell the show as the news that goes out to the street: reporters, interviews, the people.", "I wrote the promo, organised the shoot and directed the anchor on set and the street shots.", "Fast cuts, a breaking-news open, and the anchor to close with the show's socials."],
+    "vtv-periodista": ["A thank-you to VTV's reporters and anchors for Honduran Journalist's Day, 25 May.", "Show the work behind the news: editing, reporting in the street, the hospital, the set.", "I wrote it and organised the shoot with the newsroom, so we filmed them in their real day.", "The edit moves from the field to the set, and ends on the 25 de mayo card."],
+    "vtv-picosas": ["A promo for Tardes Picosas, the afternoon show with Rafael Díaz Alcerro, \"el locutor del pueblo\".", "Show what makes the show: Rafael with the people, the radio, live music, and the time slot.", "I wrote it and organised the shoot with the show's team, on the street and on set.", "Name on screen in the first seconds, the time slot over the music, and the Picosa TV and radio logos at the end."],
+    "vtv-41": ["A spot for VTV's 41 years.", "Mix the channel's past with the studios today, so 41 years feel like one story.", "We filmed the crew and presenters behind the scenes in the studios today.", "I went through the archive and cut it against the new footage, with light leaks between eras, and the 41 años card."]
+  };
+  const tvLevels = key => {
+    const p = P.find(x => x.key === key);
+    return [
+      { n: "Storyboard", sub: "8 frames from the video", board: BOARDS[key] },
+      { n: "Behind the scenes", sub: "How I thought it", notes: BTS.tv(p, TVSTEPS[key]) },
+      { n: "The edit", sub: "Rhythm and format", notes: [{ h: "Rhythm", p: pace(key) }, { h: "Format", p: "Horizontal 16:9 for broadcast, with the channel's graphics." }, { h: "Why it matters to you", p: p.help }] }
+    ];
+  };
+  const gozaLevels = key => [
+    { n: "Storyboard", sub: "8 frames from the video", board: BOARDS[key] },
+    { n: "How we made it", sub: "Plan, shoot, edit", notes: BTS.goza },
+    { n: "What it was for", sub: "Tickets", notes: [{ h: "The goal", p: "Every GOZA video promotes one party and sends people to buy tickets online at goza.be." }, { h: "What happened", p: "The promos are well received, and they have brought a lot of people to buy their tickets online." }, { h: "Rhythm", p: pace(key) }] }
+  ];
+  P.forEach(p => {
+    if (p.key === "vtv-padre") p.levels = [
+      { n: "The idea", sub: "Brief · 4 pitches · moodboard", t: [["Brief", "t-brief"], ["Ideas", "t-ideas"], ["Moodboard", "t-mood"]] },
+      { n: "Pre-production", sub: "Script · shot list · storyboard", t: [["Script", "t-script"], ["Shot list", "t-shots"], ["Storyboard", "t-board"]] },
+      { n: "The edit", sub: "What changed · credits", t: [["What changed", "t-changes"], ["Credits", "t-credits"]] }
+    ];
+    else if (TVSTEPS[p.key]) p.levels = tvLevels(p.key);
+    else if (BOARDS[p.key]) p.levels = gozaLevels(p.key);
+  });
 
   $("#libcount").textContent = `${P.length} projects · ${SK.length} skills`;
   $("#tabp").textContent = `Projects · ${P.length}`; $("#tabs").textContent = `Skills · ${SK.length}`;
@@ -1162,7 +1310,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   const cellOf = k => shelf.querySelector(`.cell[data-k="${k}"]`);
   function cartHTML(kind, x) {
     const body = `<span class="cart__board"></span><span class="cart__chip"></span><span class="cart__pins"></span><span class="plastic"></span><span class="cart__notch"></span><span class="cart__ridges"></span>`;
-    if (kind === "p") return body + (x.folders ? '<span class="cart__tag" title="Has the process inside"></span>' : "") + (x.cat === "reel" ? '<span class="cart__star">★ SPECIAL</span>' : "") +
+    if (kind === "p") return body + (x.levels ? '<span class="cart__tag" title="Has levels inside"></span>' : "") + (x.cat === "reel" ? '<span class="cart__star">★ SPECIAL</span>' : "") +
       `<span class="cart__label"><span class="cart__art"><img src="console/m2/${x.key}.jpg" alt="" loading="lazy" style="${x.o === "v" ? "object-position:50% 35%" : ""}"></span><span class="cart__t">${x.title}</span><span class="cart__m">${[x.short, x.year, x.o === "v" ? "9:16" : "16:9"].filter(Boolean).join(" · ")}</span></span><span class="cart__glare"></span>`;
     return body + `<span class="cart__label"><span class="cart__art"><span class="skillart"><b>${x.name.toUpperCase()}</b><span>${x.list.length} ${x.list.length === 1 ? "PROJECT" : "PROJECTS"}</span></span></span><span class="cart__t">${x.name}</span><span class="cart__m">Skill · Compilation</span></span><span class="cart__glare"></span>`;
   }
@@ -1360,24 +1508,17 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
 
   /* ---------- panel under the console ---------- */
   function renderNow() {
-    if (!inserted) { now.innerHTML = `<p class="now__idle">The console is empty. Click a cartridge, or drag it into the slot. Projects play that video. Skills play every project where I did that job. A red dot means the cartridge has the process inside: brief, script, storyboard.</p>`; return; }
+    if (!inserted) { now.innerHTML = `<p class="now__idle">The console is empty. Click a cartridge, or drag it into the slot. Projects play that video. Skills play every project where I did that job. A red dot means the cartridge has levels inside: the storyboard, behind the scenes, and how it was made.</p>`; return; }
     const { kind, x } = inserted;
     if (kind === "p") {
       now.innerHTML = `<h3>${x.title}</h3><p>${x.desc}</p><dl><dt>Client</dt><dd>${x.client}</dd>${x.year ? `<dt>Year</dt><dd>${x.year}</dd>` : ""}<dt>Role</dt><dd>${x.role}</dd><dt>Type</dt><dd>${CAT[x.cat][0]}</dd></dl>` +
         `<div class="now__how"><span>How it was made</span><p>${x.how}</p>${x.yt ? `<p class="now__yt"><a href="${x.yt}" target="_blank" rel="noopener">Watch the full video on YouTube ↗</a></p>` : ""}</div>` +
         `<div class="now__help"><span>What I can do for you</span><p>${x.help}</p><button class="hire" data-hire><span class="keycard" style="color:#ffd23a"></span>Hire me · copy my email</button></div>` +
-        (x.folders ? `<div class="now__files"><div class="now__fhead"><span>On this cartridge · ${x.folders.length} items</span><span>Space = preview</span></div><div class="files" id="files"></div></div>` : "");
-      if (x.folders) {
-        const files = $("#files");
-        x.folders.forEach((f, i) => {
-          const b = document.createElement("button"); b.className = "item"; b.dataset.i = i;
-          b.innerHTML = (f.doc ? `<span class="doc"><em>TXT</em></span>` :
-            `<span class="fold"><span class="fold__back"></span><span class="fold__paper ${f.peek === "lines" ? "lines" : ""}">${f.peek !== "lines" ? `<img src="${f.peek}" alt="">` : ""}</span><span class="fold__front"><em>${f.name.slice(0, 2)}</em></span></span>`) +
-            `<span class="item__label">${f.name.replace(/^\d\d /, "")}<small>${f.meta}</small></span>`;
-          b.addEventListener("click", () => openQL(i));
-          files.appendChild(b);
-        });
-        if (!reduce) files.querySelectorAll(".item").forEach((el, i) => el.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 500, delay: 200 + i * 45, easing: EASE, fill: "backwards" }));
+        (x.levels ? `<div class="now__lv"><div class="now__fhead"><span>Level select</span><span>${x.levels.length} levels inside</span></div><div class="lvls" id="lvls">${x.levels.map((l, i) => `<button class="lvl" data-i="${i}"><span class="lvl__n">Level ${i + 1}</span><b>${l.n}</b><small>${l.sub}</small></button>`).join("")}</div></div>` : "");
+      if (x.levels) {
+        const lv = $("#lvls");
+        lv.querySelectorAll(".lvl").forEach(b => b.addEventListener("click", () => openQL(+b.dataset.i)));
+        if (!reduce) lv.querySelectorAll(".lvl").forEach((el, i) => el.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 500, delay: 200 + i * 70, easing: EASE, fill: "backwards" }));
       }
     } else {
       now.innerHTML = `<h3>${x.name}</h3><p>${x.line} ${x.list.length} projects.</p><ul class="playlist">${x.list.map((p, i) => `<li><button data-i="${i}" class="${i === pl.i && pl.list === x.list ? "is-now" : ""}"><b>${p.title}</b><span>${p.client}</span></button></li>`).join("")}</ul>`;
@@ -1400,17 +1541,23 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
 
   /* ---------- Quick Look ---------- */
   const ql = $("#ql"), shellQ = $("#qlshell"); let qi = -1;
-  const items = () => [...document.querySelectorAll("#files .item")];
+  const items = () => [...document.querySelectorAll("#lvls .lvl")];
   function renderQL(i) {
-    const f = inserted.x.folders[i]; qi = i;
-    $("#qltitle").textContent = `${inserted.x.title} / ${f.name}`;
-    const body = $("#qlbody"); body.innerHTML = ""; body.appendChild(document.getElementById(f.t).content.cloneNode(true)); body.scrollTop = 0;
+    const x = inserted.x, l = x.levels[i]; qi = i;
+    $("#qltitle").textContent = `${x.title} / Level ${i + 1}`;
+    const body = $("#qlbody"); body.innerHTML = `<header class="lv-top"><span>Level ${i + 1} of ${x.levels.length}</span><h3>${l.n}</h3><p>${l.sub}</p></header>`;
+    if (l.t) l.t.forEach(([h, id]) => { const sec = document.createElement("section"); sec.className = "lv-sec"; sec.innerHTML = `<h4 class="lv-h">${h}</h4>`; sec.appendChild(document.getElementById(id).content.cloneNode(true)); body.appendChild(sec); });
+    if (l.board) body.insertAdjacentHTML("beforeend", `<div class="sb ${x.o === "v" ? "sb--v" : ""}">${l.board.map((f, k) => `<figure><div class="sb__f"><img src="${f.img}" alt="" loading="lazy"><span class="sb__n">${String(k + 1).padStart(2, "0")}</span><span class="sb__tc">${f.tc}</span></div><figcaption>${f.cap}</figcaption></figure>`).join("")}</div>`);
+    if (l.notes) body.insertAdjacentHTML("beforeend", `<div class="lvnotes">${l.notes.map(n => `<section><span>${n.h}</span><p>${n.p}</p></section>`).join("")}</div>`);
+    body.insertAdjacentHTML("beforeend", `<nav class="lv-next">${i > 0 ? `<button data-go="-1">◀ Level ${i}</button>` : "<i></i>"}${i < x.levels.length - 1 ? `<button data-go="1">Level ${i + 2}: ${x.levels[i + 1].n} ▶</button>` : `<button data-go="close">Back to the console ✕</button>`}</nav>`);
+    body.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => b.dataset.go === "close" ? closeQL() : qlStep(+b.dataset.go)));
+    body.scrollTop = 0;
     items().forEach((el, k) => el.classList.toggle("is-selected", k === i));
   }
-  const originOf = i => { const el = items()[i]; return el && el.querySelector(".fold, .doc").getBoundingClientRect(); };
+  const originOf = i => { const el = items()[i]; return el && el.getBoundingClientRect(); };
   const fromTo = (a, b) => `translate(${a.left + a.width / 2 - b.left - b.width / 2}px, ${a.top + a.height / 2 - b.top - b.height / 2}px) scale(.08)`;
   function openQL(i) {
-    if (!inserted || !inserted.x.folders) return;
+    if (!inserted || !inserted.x.levels) return;
     renderQL(i); ql.hidden = false; document.body.classList.add("is-locked"); sfx.pop();
     $("#qlclose").focus({ preventScroll: true });
     if (reduce) return;
@@ -1427,7 +1574,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
     shellQ.animate([{ transform: "none", opacity: 1 }, { transform: fromTo(originOf(qi), shellQ.getBoundingClientRect()), opacity: 0 }], { duration: 360, easing: "cubic-bezier(.5, 0, .75, 0)", fill: "forwards" }).onfinish = done;
   }
   function qlStep(d) {
-    const n = inserted.x.folders.length; renderQL((qi + d + n) % n); sfx.tick();
+    const n = inserted.x.levels.length; renderQL((qi + d + n) % n); sfx.tick();
     if (!reduce) $("#qlbody").animate([{ opacity: 0, transform: `translateX(${d * 14}px)` }, { opacity: 1, transform: "none" }], { duration: 420, easing: EASE });
   }
   $("#qlclose").addEventListener("click", closeQL);
@@ -1441,7 +1588,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
       return;
     }
     const a = document.activeElement;
-    if (e.key === " " && a && a.classList.contains("item")) { e.preventDefault(); openQL(+a.dataset.i); }
+    if (e.key === " " && a && a.classList.contains("lvl")) { e.preventDefault(); openQL(+a.dataset.i); }
   });
 
   /* ---------- dock: background + sound ---------- */
@@ -1629,6 +1776,24 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   addEventListener("keydown", e => { if (lib.hidden || !ql.hidden || document.activeElement !== joy) return; const k = { ArrowLeft: [0, -20], ArrowRight: [0, 20], ArrowUp: [-15, 0], ArrowDown: [15, 0] }[e.key]; if (k) { e.preventDefault(); rx = clamp(rx + k[0], -80, 80); ry += k[1]; applyRot(); } });
   joy.tabIndex = 0;
 
+  /* ---------- leaving the page (home button, another app, another tab, locked phone): everything goes quiet ---------- */
+  let wakeMusic = false;
+  function sleepAll() {
+    if (MUS.on) { wakeMusic = true; MUS.on = false; clearInterval(MUS.timer); if (MUS.bus) { try { MUS.bus.out.gain.cancelScheduledValues(0); MUS.bus.out.gain.setValueAtTime(0, MUS.bus.c.currentTime); } catch (err) {} } }
+    document.querySelectorAll("video").forEach(v => { if (!v.paused) { v.dataset.sleep = v.muted ? "loop" : "sound"; v.pause(); } });
+    try { if (actx && actx.state === "running") actx.suspend(); } catch (err) {}
+  }
+  function wakeAll() {
+    const go = () => {
+      document.querySelectorAll("video[data-sleep]").forEach(v => { if (v.dataset.sleep === "loop") v.play().catch(() => {}); delete v.dataset.sleep; });
+      if (wakeMusic) { wakeMusic = false; if (musicStart()) paintMusic(); }
+    };
+    try { if (actx && actx.state === "suspended") actx.resume().then(go, go); else go(); } catch (err) { go(); }
+  }
+  document.addEventListener("visibilitychange", () => { if (document.hidden) sleepAll(); else wakeAll(); });
+  addEventListener("pagehide", sleepAll);
+  addEventListener("freeze", sleepAll);
+
 
   /* ---------- pixel textures, drawn in code: original 64x64 tiles in the spirit of 90s shooter walls ---------- */
   function vnoise(R, n) {
@@ -1676,9 +1841,57 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
     const root = document.documentElement.style;
     Object.entries(tx).forEach(([k, v]) => root.setProperty("--tx-" + k, `url(${v})`));
   } catch (e) {}
-  const WALL = { hell: "flesh", toxic: "circuit", tech: "techblue", void: "brick" };
-  function applyWall(name) { if (tx[WALL[name]]) document.documentElement.style.setProperty("--tx-wall", `url(${tx[WALL[name]]})`); }
+  /* lava and flesh: a 96px tile. Flesh with veins, cracks of magma running through it, charred patches.
+     One colour set per world, so the wall follows the colour switch. The magma tile only holds the glowing cracks (it pulses on top). */
+  const LAVA = {
+    hell: { flesh: [150, 38, 30], hi: [214, 92, 74], vein: [70, 10, 12], c0: [120, 20, 6], c1: [255, 110, 18], c2: [255, 214, 90] },
+    toxic: { flesh: [46, 92, 34], hi: [120, 190, 80], vein: [12, 40, 10], c0: [20, 90, 10], c1: [120, 255, 40], c2: [220, 255, 150] },
+    tech: { flesh: [44, 60, 104], hi: [110, 140, 210], vein: [10, 16, 50], c0: [10, 40, 120], c1: [40, 150, 255], c2: [190, 230, 255] },
+    void: { flesh: [70, 62, 60], hi: [140, 130, 124], vein: [22, 18, 18], c0: [80, 20, 10], c1: [220, 80, 30], c2: [255, 190, 110] }
+  };
+  function lavaTile(pal, glowOnly) {
+    const S = 128, cv = document.createElement("canvas"); cv.width = cv.height = S;
+    const g = cv.getContext("2d"), img = g.createImageData(S, S), R = rng(97);
+    const a = vnoise(R, 4), b = vnoise(R, 12), w = vnoise(R, 3), w2 = vnoise(R, 5), v = vnoise(R, 8), ch = vnoise(R, 6), fine = vnoise(R, 32), k = 64 / S;
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+      const X = x * k, Y = y * k, t = a(X, Y) * .6 + b(X, Y) * .4;
+      // cracks: a ridge line of a warped noise field
+      const r1 = Math.abs(w(X + v(X, Y) * 22, Y + v(Y, X) * 22) - .5), r2 = Math.abs(w2(X - v(Y, X) * 14, Y + v(X, Y) * 14) - .5) * 1.5, heat = Math.max(0, 1 - r1 / .032, (1 - r2 / .022) * .7) * (.7 + fine(X, Y) * .6);
+      const vein = Math.abs(Math.sin((X + Y * .4) * .14 + v(X, Y) * 9));
+      let c = mul(pal.flesh, .5 + t * .75 + (fine(X, Y) - .5) * .25);
+      if (vein < .07) c = pal.vein; else if (vein < .13) c = mul(pal.flesh, .55);
+      if (t > .74) c = mul(pal.hi, .8 + (t - .74) * 2); else if (t < .3) c = mul(c, .7);
+      if (ch(X, Y) > .7) c = mul(c, .45);
+      if (R() < .03) c = mul(c, .6);
+      let glow = [0, 0, 0];
+      if (heat > 0) { glow = heat > .72 ? pal.c2 : heat > .38 ? pal.c1 : pal.c0; c = heat > .2 ? glow : mul(c, .5); }
+      if (glowOnly) c = heat > .2 ? glow : [0, 0, 0];
+      const i = (y * S + x) * 4; img.data[i] = clamp(c[0], 0, 255); img.data[i + 1] = clamp(c[1], 0, 255); img.data[i + 2] = clamp(c[2], 0, 255); img.data[i + 3] = 255;
+    }
+    g.putImageData(img, 0, 0); return cv.toDataURL();
+  }
+  const lavaCache = {};
+  function applyWall(name) {
+    if (!LAVA[name]) name = "hell";
+    try {
+      if (!lavaCache[name]) lavaCache[name] = [lavaTile(LAVA[name]), lavaTile(LAVA[name], true)];
+      const st = document.documentElement.style;
+      st.setProperty("--tx-lava", `url(${lavaCache[name][0]})`); st.setProperty("--tx-magma", `url(${lavaCache[name][1]})`);
+    } catch (e) {}
+  }
   applyWall(document.documentElement.getAttribute("data-bg") || "hell");
+
+  /* depth: the wall leans away from the pointer and slides slower than the page when you scroll */
+  (() => {
+    if (reduce) return;
+    const root = document.documentElement.style; let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    const loop = () => { cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+      root.setProperty("--wy", (cx * 7).toFixed(2) + "deg"); root.setProperty("--wx", (-cy * 5).toFixed(2) + "deg"); root.setProperty("--px", (-cx * 26).toFixed(1) + "px");
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > .002 ? requestAnimationFrame(loop) : 0; };
+    addEventListener("pointermove", e => { if (e.pointerType !== "mouse") return; tx = e.clientX / innerWidth - .5; ty = e.clientY / innerHeight - .5; if (!raf) raf = requestAnimationFrame(loop); }, { passive: true });
+    let sraf = 0;
+    addEventListener("scroll", () => { if (sraf) return; sraf = requestAnimationFrame(() => { sraf = 0; root.setProperty("--sy", (-scrollY * .18).toFixed(1) + "px"); }); }, { passive: true });
+  })();
 
   /* ---------- face buttons and d-pad ---------- */
   document.querySelectorAll("[data-fb]").forEach(b => b.addEventListener("click", () => {
