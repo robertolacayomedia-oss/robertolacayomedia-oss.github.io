@@ -455,13 +455,18 @@ const DATA = {"CAT":{"reel":["Showreel","gunmetal","A sample of what your brand 
     $("#pv-desc").textContent = p.desc; $("#pv-how").textContent = p.how; $("#pv-help").textContent = p.help;
     pv.scrollTop = 0;
   }
+  // the project page is its own history step: the phone's back button closes it and stays on the same section
+  addEventListener("popstate", () => { if (pv.classList.contains("open")) close(true); });
   function open(i) {
+    if (!(history.state && history.state.pv)) history.pushState({ pv: 1 }, "", location.href);
     lastFocus = document.activeElement; show(i);
     pv.classList.add("open"); pv.setAttribute("aria-hidden", "false"); document.body.classList.add("locked");
     films.forEach(f => { const v = f.querySelector("video"); v && v.pause(); });
     $("#pv-close").focus();
   }
-  function close() {
+  function close(fromPop) {
+    // closed with the X or Escape: step back over our own history entry (popstate then closes it)
+    if (fromPop !== true && history.state && history.state.pv) { history.back(); return; }
     pv.classList.remove("open"); pv.setAttribute("aria-hidden", "true"); document.body.classList.remove("locked");
     setTimeout(() => { if (!pv.classList.contains("open")) { killHls(); stage.innerHTML = ""; } }, 600);
     lastFocus && lastFocus.focus();
