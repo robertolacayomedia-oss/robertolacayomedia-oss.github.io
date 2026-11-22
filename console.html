@@ -858,7 +858,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
     { id: "fathers-day", key: "vtv-padre", cat: "tv", o: "h", title: "Father's Day", client: "VTV Honduras", year: "2026", role: "Idea · Script · Directing · Edit", skills: ["write", "direct", "edit"],
       desc: "A Father's Day spot for VTV's national broadcast. A dad, his son and a paper parrot.",
       how: "I pitched four ideas and the channel chose the hands. No actors and no budget, so we filmed people who work at the channel and their kids, in close-ups, inside the building. A paper parrot ended up tying the whole day together.",
-      film: "media/vtv-padre.mp4", poster: "media/case/padre/f066.jpg",
+      film: "https://pub-613f9c7223174c9d991c15739ba98973.r2.dev/site/media/vtv-padre.mp4", poster: "media/case/padre/f066.jpg",
       folders: [
         { t: "t-brief", name: "01 Brief", meta: "1 page", peek: "lines" },
         { t: "t-ideas", name: "02 Ideas", meta: "4 pitches", peek: "lines" },
@@ -969,7 +969,7 @@ from the internet, so here I swapped them for frames from the film.</i></pre>
   const FULL_SITE = ["showreel-2026", "vtv-padre", "gelatina", "mv-boogieville", "vtv-verano", "mv-retro", "goza-paramour", "elnicoya-live", "vtv-trabajador", "mv-club", "goza-requin", "vtv-meridiano", "declassic", "elnicoya-tope", "vtv-periodista", "imeb-takeover", "vtv-picosas", "goza-grandplace", "vtv-41", "showreel-fiction"];
   const FULL_NEW = ["cube", "mothers-day", "ayd", "goza-ariel", "goza-sept", "goza-july", "goza-night", "calciopoli", "totonero", "fiesta"];
   const YT = { adambk: "tGf2qmTqtsU", alhara: "SyTwoiyePiA", release: "lZkn7xPHf8I", pilot: "uLuUXor0P70" };
-  P.forEach(p => { if (FULL_SITE.includes(p.key)) p.full = "media/" + p.key + ".mp4"; else if (FULL_NEW.includes(p.key)) p.full = "media2/" + p.key + ".mp4"; if (YT[p.key]) p.yt = "https://www.youtube.com/watch?v=" + YT[p.key]; });
+  P.forEach(p => { if (FULL_SITE.includes(p.key)) p.full = "https://pub-613f9c7223174c9d991c15739ba98973.r2.dev/site/media/" + p.key + ".mp4"; else if (FULL_NEW.includes(p.key)) p.full = "https://pub-613f9c7223174c9d991c15739ba98973.r2.dev/site/media2/" + p.key + ".mp4"; if (YT[p.key]) p.yt = "https://www.youtube.com/watch?v=" + YT[p.key]; });
   const SK = [
     { id: "edit", name: "Editing", line: "Everything I cut. Insert it and the console plays them one after another." },
     { id: "camera", name: "Camera", line: "The projects I filmed myself: crowds, club light, markets at sunrise." },
